@@ -27,12 +27,13 @@ const TypingTest = () => {
   const [letterIndex, setLetterIndex] = useState(0);
   const [typed, setTyped] = useState('');
   const [typedIndex, setTypedIndex] = useState(0);
-  const [currentWord, setCurrentWord] = useState(words[0]);
-  const [nextLetter, setNextLetter] = useState(words[0].charAt(0));
   const [isTestDone, setIsTestDone] = useState(false);
 
   useEffect(() => {
     function handleKeydown(e) {
+      const currentWord = wordsObject[wordIndex].word;
+      const nextLetter = wordsObject[wordIndex].word.charAt(letterIndex);
+
       // if user at start of word and types space, do nothing
       if (typedIndex === 0 && (e.key === ' ' || e.keycode === 32)) {
         return;
@@ -51,16 +52,11 @@ const TypingTest = () => {
           return;
         }
 
-        let newWord = wordsObject[newWordIndex].word;
-        let newNextLetter = newWord.charAt(0);
-
         setWordIndex(newWordIndex);
         setWordsObject(newWordsObject);
         setLetterIndex(0);
         setTyped('');
         setTypedIndex(0);
-        setCurrentWord(newWord);
-        setNextLetter(newNextLetter);
 
         return;
       }
@@ -78,7 +74,6 @@ const TypingTest = () => {
           let newLetterIndex = letterIndex - 1;
           if (typedIndex <= letterIndex) {
             setLetterIndex(newLetterIndex);
-            setNextLetter(currentWord.charAt(newLetterIndex));
           }
           setTypedIndex(typedIndex - 1);
         }
@@ -109,7 +104,6 @@ const TypingTest = () => {
         if (newLetterIndex < currentWord.length) {
           let newLetterIndex = letterIndex + 1;
           setLetterIndex(newLetterIndex);
-          setNextLetter(currentWord.charAt(newLetterIndex));
           return;
         }
       } else {
@@ -130,16 +124,7 @@ const TypingTest = () => {
     return () => {
       window.removeEventListener('keydown', handleKeydown);
     };
-  }, [
-    wordsObject,
-    wordIndex,
-    letterIndex,
-    typed,
-    typedIndex,
-    currentWord,
-    nextLetter,
-    isTestDone,
-  ]);
+  }, [wordsObject, wordIndex, letterIndex, typed, typedIndex, isTestDone]);
 
   return (
     <>
@@ -152,8 +137,8 @@ const TypingTest = () => {
           <p>letter index: {letterIndex}</p>
           <p>typed: {typed}</p>
           <p>typed index: {typedIndex}</p>
-          <p>current word: {currentWord}</p>
-          <p>next letter: {nextLetter}</p>
+          <p>current word: {words[wordIndex]}</p>
+          <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
           <p>test done? {String(isTestDone)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
