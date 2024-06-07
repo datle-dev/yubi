@@ -82,9 +82,7 @@ const TypingTest = () => {
         let newLetterIndex = letterIndex + 1;
         let newTypedIndex = typedIndex + 1;
 
-        newWordsObject[wordIndex].typed = newWordsObject[
-          wordIndex
-        ].typed.concat('', e.key);
+        newWordsObject[wordIndex].typed += e.key;
 
         setWordsObject(newWordsObject);
         setTypedIndex(newTypedIndex);
@@ -107,9 +105,7 @@ const TypingTest = () => {
       } else {
         // even if keypress was wrong, capture what user typed
         let newWordsObject = [...wordsObject];
-        newWordsObject[wordIndex].typed = newWordsObject[
-          wordIndex
-        ].typed.concat('', e.key);
+        newWordsObject[wordIndex].typed += e.key;
 
         setWordsObject(newWordsObject);
         setTypedIndex(typedIndex + 1);
