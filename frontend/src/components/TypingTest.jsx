@@ -120,9 +120,9 @@ const TypingTest = () => {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col justify-center items-center">
+        <h2>Debug Info</h2>
         <div>
-          <h2>Debug Info</h2>
           <p>words length: {words.length}</p>
           <p>word index: {wordIndex}</p>
           <p>words object: {JSON.stringify(wordsObject)}</p>
@@ -134,8 +134,8 @@ const TypingTest = () => {
           <p>test done? {String(isTestDone)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
-        <div>
-          <h2>Typing Area</h2>
+        <h2>Typing Area</h2>
+        <div className="flex justify-start flex-wrap">
           {wordsObject.map((wordObject, index) => {
             return (
               <Word

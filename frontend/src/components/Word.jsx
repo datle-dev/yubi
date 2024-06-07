@@ -1,4 +1,4 @@
-import Letter from "./Letter";
+import Letter from './Letter';
 
 export default function Word({ word, typed }) {
   const maxLength = Math.max(word.length, typed.length);
@@ -7,21 +7,21 @@ export default function Word({ word, typed }) {
     let letterArray = [];
 
     for (let i = 0; i < maxLength; i++) {
-      if (word.charAt(i) === "") {
+      if (word.charAt(i) === '') {
         letterArray.push(
-          <Letter key={i} letter={typed.charAt(i)} letterType={"extra"} />
+          <Letter key={i} letter={typed.charAt(i)} letterType={'extra'} />,
         );
-      } else if (typed.charAt(i) === "") {
+      } else if (typed.charAt(i) === '') {
         letterArray.push(
-          <Letter key={i} letter={word.charAt(i)} letterType={"normal"} />
+          <Letter key={i} letter={word.charAt(i)} letterType={'normal'} />,
         );
       } else if (word.charAt(i) === typed.charAt(i)) {
         letterArray.push(
-          <Letter key={i} letter={typed.charAt(i)} letterType={"correct"} />
+          <Letter key={i} letter={typed.charAt(i)} letterType={'correct'} />,
         );
       } else {
         letterArray.push(
-          <Letter key={i} letter={word.charAt(i)} letterType={"wrong"} />
+          <Letter key={i} letter={word.charAt(i)} letterType={'wrong'} />,
         );
       }
     }
@@ -31,7 +31,7 @@ export default function Word({ word, typed }) {
 
   return (
     <>
-      <div>{renderLetters()}</div>
+      <div className="text-2xl font-mono mx-1">{renderLetters()}</div>
     </>
   );
 }
