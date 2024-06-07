@@ -1,84 +1,72 @@
-import { useState, useEffect, useMemo } from "react";
-import Word from "./Word";
+import { useState, useEffect } from 'react';
+import Word from './Word';
 
 const TypingTest = () => {
-  const words = useMemo(() => {
-    return [
-      "the",
-      "quick",
-      "brown",
-      "fox",
-      "jumps",
-      "over",
-      "the",
-      "lazy",
-      "dog",
-    ];
-  }, []);
+  const words = [
+    'the',
+    'quick',
+    'brown',
+    'fox',
+    'jumps',
+    'over',
+    'the',
+    'lazy',
+    'dog',
+  ];
 
   const [wordsObject, setWordsObject] = useState(
     words.map((word) => ({
       word: word,
-      typed: "",
-    }))
+      typed: '',
+    })),
   );
 
   const [wordIndex, setWordIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
-  const [typed, setTyped] = useState("");
   const [typedIndex, setTypedIndex] = useState(0);
-  const [currentWord, setCurrentWord] = useState(words[0]);
-  const [nextLetter, setNextLetter] = useState(words[0].charAt(0));
   const [isTestDone, setIsTestDone] = useState(false);
 
   useEffect(() => {
     function handleKeydown(e) {
+      const currentWord = wordsObject[wordIndex].word;
+      const nextLetter = wordsObject[wordIndex].word.charAt(letterIndex);
+
       // if user at start of word and types space, do nothing
-      if (typedIndex === 0 && (e.key === " " || e.keycode === 32)) {
+      if (typedIndex === 0 && (e.key === ' ' || e.keycode === 32)) {
         return;
       }
 
       // if user not at start of word and types space, go to next word
-      if (typedIndex > 0 && (e.key === " " || e.keycode === 32)) {
+      if (typedIndex > 0 && (e.key === ' ' || e.keycode === 32)) {
         let newWordIndex = wordIndex + 1;
-        let newWordsObject = [...wordsObject];
-        newWordsObject[wordIndex].typed = typed;
 
         // if already on last word, end typing test
         if (newWordIndex >= wordsObject.length) {
-          setWordsObject(newWordsObject);
           setIsTestDone(true);
           return;
         }
 
-        let newWord = wordsObject[newWordIndex].word;
-        let newNextLetter = newWord.charAt(0);
-
         setWordIndex(newWordIndex);
-        setWordsObject(newWordsObject);
         setLetterIndex(0);
-        setTyped("");
         setTypedIndex(0);
-        setCurrentWord(newWord);
-        setNextLetter(newNextLetter);
 
         return;
       }
 
       // if user types backspace, remove previously typed character
-      if (e.key === "Backspace" || e.keycode === 8) {
-        let newTyped = typed.slice(0, -1);
+      if (e.key === 'Backspace' || e.keycode === 8) {
         let newWordsObject = [...wordsObject];
-
-        newWordsObject[wordIndex].typed = newTyped;
+        newWordsObject[wordIndex].typed = newWordsObject[wordIndex].typed.slice(
+          0,
+          -1,
+        );
 
         setWordsObject(newWordsObject);
-        setTyped(newTyped);
+
         if (letterIndex > 0) {
           let newLetterIndex = letterIndex - 1;
           if (typedIndex <= letterIndex) {
             setLetterIndex(newLetterIndex);
-            setNextLetter(currentWord.charAt(newLetterIndex));
           }
           setTypedIndex(typedIndex - 1);
         }
@@ -90,17 +78,18 @@ const TypingTest = () => {
       if (e.key === nextLetter) {
         let newWordsObject = [...wordsObject];
         let newLetterIndex = letterIndex + 1;
-        let newTyped = typed.concat("", e.key);
         let newTypedIndex = typedIndex + 1;
 
-        newWordsObject[wordIndex].typed = newTyped;
+        newWordsObject[wordIndex].typed += e.key;
 
         setWordsObject(newWordsObject);
-        setTyped(newTyped);
         setTypedIndex(newTypedIndex);
 
         // if user on last word and typed word matches, end typing test
-        if (wordIndex === wordsObject.length - 1 && newTyped === currentWord) {
+        if (
+          wordIndex === wordsObject.length - 1 &&
+          newWordsObject[wordIndex].typed === currentWord
+        ) {
           setIsTestDone(true);
           return;
         }
@@ -109,37 +98,25 @@ const TypingTest = () => {
         if (newLetterIndex < currentWord.length) {
           let newLetterIndex = letterIndex + 1;
           setLetterIndex(newLetterIndex);
-          setNextLetter(currentWord.charAt(newLetterIndex));
           return;
         }
       } else {
         // even if keypress was wrong, capture what user typed
         let newWordsObject = [...wordsObject];
-        let newTyped = typed.concat("", e.key);
-        newWordsObject[wordIndex].typed = newTyped;
+        newWordsObject[wordIndex].typed += e.key;
 
         setWordsObject(newWordsObject);
-        setTyped(typed.concat("", e.key));
         setTypedIndex(typedIndex + 1);
       }
       return;
     }
 
-    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener('keydown', handleKeydown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener('keydown', handleKeydown);
     };
-  }, [
-    wordsObject,
-    wordIndex,
-    letterIndex,
-    typed,
-    typedIndex,
-    currentWord,
-    nextLetter,
-    isTestDone,
-  ]);
+  }, [wordsObject, wordIndex, letterIndex, typedIndex, isTestDone]);
 
   return (
     <>
@@ -150,10 +127,10 @@ const TypingTest = () => {
           <p>word index: {wordIndex}</p>
           <p>words object: {JSON.stringify(wordsObject)}</p>
           <p>letter index: {letterIndex}</p>
-          <p>typed: {typed}</p>
+          <p>typed: {wordsObject[wordIndex].typed}</p>
           <p>typed index: {typedIndex}</p>
-          <p>current word: {currentWord}</p>
-          <p>next letter: {nextLetter}</p>
+          <p>current word: {words[wordIndex]}</p>
+          <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
           <p>test done? {String(isTestDone)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
