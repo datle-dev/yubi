@@ -1,20 +1,18 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Word from './Word';
 
 const TypingTest = () => {
-  const words = useMemo(() => {
-    return [
-      'the',
-      'quick',
-      'brown',
-      'fox',
-      'jumps',
-      'over',
-      'the',
-      'lazy',
-      'dog',
-    ];
-  }, []);
+  const words = [
+    'the',
+    'quick',
+    'brown',
+    'fox',
+    'jumps',
+    'over',
+    'the',
+    'lazy',
+    'dog',
+  ];
 
   const [wordsObject, setWordsObject] = useState(
     words.map((word) => ({
