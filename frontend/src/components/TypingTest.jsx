@@ -109,16 +109,17 @@ const TypingTest = () => {
 
         // if word not finished, set letter and its index
         if (newLetterIndex < currentWord.length) {
-          let newLetterIndex = letterIndex + 1;
           setLetterIndex(newLetterIndex);
           return;
         }
       } else {
         // even if keypress was wrong, capture what user typed
         let newWordsObject = [...wordsObject];
+        let newLetterIndex = letterIndex + 1;
         newWordsObject[wordIndex].typed += e.key;
 
         setWordsObject(newWordsObject);
+        setLetterIndex(newLetterIndex);
         setTypedIndex(typedIndex + 1);
         setTypedErrors(typedErrors + 1);
       }
