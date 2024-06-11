@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Word from './Word';
+import Stats from './Stats.jsx';
 
 const TypingTest = () => {
   const words = [
@@ -164,6 +165,13 @@ const TypingTest = () => {
             );
           })}
         </div>
+        {isTestDone && <Stats
+          wordsObject={wordsObject}
+          typedCharacters={typedCharacters}
+          typedErrors={typedErrors}
+          startTime={time.start}
+          endTime={time.end}
+        />}
       </div>
     </>
   );
