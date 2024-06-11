@@ -25,11 +25,20 @@ const TypingTest = () => {
   const [letterIndex, setLetterIndex] = useState(0);
   const [typedIndex, setTypedIndex] = useState(0);
   const [isTestDone, setIsTestDone] = useState(false);
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [time, setTime] = useState({ start: null, end: null });
+  const [typedCharacters, setTypedCharacters] = useState(0);
+  const [typedErrors, setTypedErrors] = useState(0);
 
   useEffect(() => {
     function handleKeydown(e) {
       const currentWord = wordsObject[wordIndex].word;
       const nextLetter = wordsObject[wordIndex].word.charAt(letterIndex);
+
+      if (!isTestStarted) {
+        setIsTestStarted(true);
+        setTime({ ...time, start: new Date()});
+      }
 
       // if user at start of word and types space, do nothing
       if (typedIndex === 0 && (e.key === ' ' || e.keycode === 32)) {
@@ -43,12 +52,14 @@ const TypingTest = () => {
         // if already on last word, end typing test
         if (newWordIndex >= wordsObject.length) {
           setIsTestDone(true);
+          setTime({ ...time, end: new Date()});
           return;
         }
 
         setWordIndex(newWordIndex);
         setLetterIndex(0);
         setTypedIndex(0);
+        setTypedCharacters(typedCharacters + 1);
 
         return;
       }
@@ -84,6 +95,7 @@ const TypingTest = () => {
 
         setWordsObject(newWordsObject);
         setTypedIndex(newTypedIndex);
+        setTypedCharacters(typedCharacters + 1);
 
         // if user on last word and typed word matches, end typing test
         if (
@@ -91,6 +103,7 @@ const TypingTest = () => {
           newWordsObject[wordIndex].typed === currentWord
         ) {
           setIsTestDone(true);
+          setTime({ ...time, end: new Date()});
           return;
         }
 
@@ -107,6 +120,7 @@ const TypingTest = () => {
 
         setWordsObject(newWordsObject);
         setTypedIndex(typedIndex + 1);
+        setTypedErrors(typedErrors + 1);
       }
       return;
     }
@@ -132,6 +146,9 @@ const TypingTest = () => {
           <p>current word: {words[wordIndex]}</p>
           <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
           <p>test done? {String(isTestDone)}</p>
+          <p>start time: {JSON.stringify(time)} </p>
+          <p>typed chars: {typedCharacters}</p>
+          <p>typed errors: {typedErrors}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <h2>Typing Area</h2>
