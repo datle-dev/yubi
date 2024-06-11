@@ -32,7 +32,8 @@ export default function Stats ({ wordsObject, typedCharacters, typedErrors, star
         <p>Test completed!</p>
         <p>{typedCharacters}/{errors}/{extras}/{missed}</p>
         <p>raw wpm: {rawWpm}</p>
-        <p>net wpm: {netWpm}</p>
+        {(netWpm > 0) && <p>net wpm: {netWpm}</p>}
+        {(netWpm <= 0) && <p>net wpm: Invalid</p>}
         <p>accuracy: {percentAccuracy}%</p>
       </div>
     </>
