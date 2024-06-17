@@ -104,12 +104,12 @@ const TypingTest = () => {
           newWordsObject[wordIndex].typed === currentWord
         ) {
           setIsTestDone(true);
-          setTime({ ...time, end: new Date()});
+          setTime({ ...time, end: new Date() });
           return;
         }
 
         // if word not finished, set letter and its index
-        if (newLetterIndex < currentWord.length) {
+        if (newLetterIndex <= currentWord.length) {
           setLetterIndex(newLetterIndex);
           return;
         }
