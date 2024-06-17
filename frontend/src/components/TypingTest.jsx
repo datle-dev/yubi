@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Word from './Word';
 import Stats from './Stats.jsx';
+import Cursor from './Cursor.jsx';
 
 const TypingTest = () => {
   const words = [
@@ -155,6 +156,11 @@ const TypingTest = () => {
         {isTestDone && <h2>Test done!</h2>}
         <h2>Typing Area</h2>
         <div className="flex justify-start flex-wrap">
+          <Cursor
+            wordsObject={wordsObject}
+            wordIndex={wordIndex}
+            letterIndex={letterIndex}
+          />
           {wordsObject.map((wordObject, index) => {
             return (
               <Word
