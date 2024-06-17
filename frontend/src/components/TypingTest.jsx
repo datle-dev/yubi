@@ -39,7 +39,7 @@ const TypingTest = () => {
 
       if (!isTestStarted) {
         setIsTestStarted(true);
-        setTime({ ...time, start: new Date()});
+        setTime({ ...time, start: new Date() });
       }
 
       // if user at start of word and types space, do nothing
@@ -54,7 +54,7 @@ const TypingTest = () => {
         // if already on last word, end typing test
         if (newWordIndex >= wordsObject.length) {
           setIsTestDone(true);
-          setTime({ ...time, end: new Date()});
+          setTime({ ...time, end: new Date() });
           return;
         }
 
@@ -171,13 +171,15 @@ const TypingTest = () => {
             );
           })}
         </div>
-        {isTestDone && <Stats
-          wordsObject={wordsObject}
-          typedCharacters={typedCharacters}
-          typedErrors={typedErrors}
-          startTime={time.start}
-          endTime={time.end}
-        />}
+        {isTestDone && (
+          <Stats
+            wordsObject={wordsObject}
+            typedCharacters={typedCharacters}
+            typedErrors={typedErrors}
+            startTime={time.start}
+            endTime={time.end}
+          />
+        )}
       </div>
     </>
   );
