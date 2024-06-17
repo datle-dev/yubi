@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Word from './Word';
 import Stats from './Stats.jsx';
 import Cursor from './Cursor.jsx';
@@ -31,6 +31,9 @@ const TypingTest = () => {
   const [time, setTime] = useState({ start: null, end: null });
   const [typedCharacters, setTypedCharacters] = useState(0);
   const [typedErrors, setTypedErrors] = useState(0);
+
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     function handleKeydown(e) {
@@ -135,6 +138,18 @@ const TypingTest = () => {
     };
   }, [wordsObject, wordIndex, letterIndex, typedIndex, isTestDone]);
 
+  useEffect(() => {
+    setWidth(ref.current.offsetWidth);
+
+    const getwidth = () => {
+      setWidth(ref.current.offsetWidth);
+    };
+
+    window.addEventListener('resize', getwidth);
+
+    return () => window.removeEventListener('resize', getwidth);
+  }, []);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
@@ -152,14 +167,19 @@ const TypingTest = () => {
           <p>start time: {JSON.stringify(time)} </p>
           <p>typed chars: {typedCharacters}</p>
           <p>typed errors: {typedErrors}</p>
+          <p>width: {width}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <h2>Typing Area</h2>
-        <div className="flex justify-start flex-wrap">
+        <div
+          ref={ref}
+          className="relative flex justify-start flex-wrap max-w-prose border"
+        >
           <Cursor
             wordsObject={wordsObject}
             wordIndex={wordIndex}
             letterIndex={letterIndex}
+            containerWidth={width}
           />
           {wordsObject.map((wordObject, index) => {
             return (
