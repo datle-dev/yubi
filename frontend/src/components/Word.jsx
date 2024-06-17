@@ -31,7 +31,7 @@ export default function Word({ word, typed }) {
 
   return (
     <>
-      <div className="text-2xl font-mono mx-1">{renderLetters()}</div>
+      <div className="text-2xl font-mono mr-[14.4px]">{renderLetters()}</div>
     </>
   );
 }
