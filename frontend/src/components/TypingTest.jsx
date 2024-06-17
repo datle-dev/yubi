@@ -117,7 +117,7 @@ const TypingTest = () => {
           setLetterIndex(newLetterIndex);
           return;
         }
-      } else {
+      } else if ('abcdefghijklmnopqrstuvwxyz'.includes(e.key)) {
         // even if keypress was wrong, capture what user typed
         let newWordsObject = [...wordsObject];
         let newLetterIndex = letterIndex + 1;
