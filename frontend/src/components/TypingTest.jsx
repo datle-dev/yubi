@@ -43,12 +43,12 @@ const TypingTest = () => {
       }
 
       // if user at start of word and types space, do nothing
-      if (typedIndex === 0 && (e.key === ' ' || e.keycode === 32)) {
+      if (typedIndex === 0 && e.key === ' ') {
         return;
       }
 
       // if user not at start of word and types space, go to next word
-      if (typedIndex > 0 && (e.key === ' ' || e.keycode === 32)) {
+      if (typedIndex > 0 && e.key === ' ') {
         let newWordIndex = wordIndex + 1;
 
         // if already on last word, end typing test
@@ -67,7 +67,7 @@ const TypingTest = () => {
       }
 
       // if user types backspace, remove previously typed character
-      if (e.key === 'Backspace' || e.keycode === 8) {
+      if (e.key === 'Backspace') {
         let newWordsObject = [...wordsObject];
         newWordsObject[wordIndex].typed = newWordsObject[wordIndex].typed.slice(
           0,
