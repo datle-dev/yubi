@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Word from './Word';
 import Stats from './Stats.jsx';
 import Cursor from './Cursor.jsx';
+import Counter from './Counter.jsx';
 
 const TypingTest = () => {
   const words = [
@@ -171,6 +172,7 @@ const TypingTest = () => {
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <h2>Typing Area</h2>
+        <Counter current={wordIndex} total={wordsObject.length} />
         <div
           ref={ref}
           className="relative flex justify-start flex-wrap max-w-prose border"
