@@ -23,8 +23,10 @@ export default function Stats ({ wordsObject, typedCharacters, typedErrors, star
   const wordsTyped = typedCharacters / 5; // standard to consider a 'word' to be any 5 characters
   const duration = (endTime.getTime() - startTime.getTime()) / 1000 / 60; // ms converted to min
   const rawWpm = Math.round(wordsTyped / duration);
-  const netWpm = Math.round((wordsTyped - errors) / duration);
-  const percentAccuracy = Math.round(((typedCharacters - typedErrors) / typedCharacters) * 100);
+  const netWpm = Math.round((wordsTyped - errors - extras - missed) / duration);
+  const percentAccuracy = Math.round(
+    ((typedCharacters - typedErrors - extras - missed) / typedCharacters) * 100,
+  );
 
   return (
     <>
