@@ -23,6 +23,13 @@ const TypingTest = () => {
     })),
   );
 
+  const [config, setConfig] = useState({
+    isTimedTest: true,
+    timedTestDuration: 10, // seconds
+    isWordsTest: false,
+    wordsTestTarget: 25,
+  });
+
   const [wordIndex, setWordIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
   const [typedIndex, setTypedIndex] = useState(0);
@@ -155,6 +162,7 @@ const TypingTest = () => {
       <div className="flex flex-col justify-center items-center">
         <h2>Debug Info</h2>
         <div>
+          <p>config: {JSON.stringify(config)}</p>
           <p>words length: {words.length}</p>
           <p>word index: {wordIndex}</p>
           <p>words object: {JSON.stringify(wordsObject)}</p>
