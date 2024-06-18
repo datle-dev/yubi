@@ -35,7 +35,11 @@ const TypingTest = () => {
   const [typedIndex, setTypedIndex] = useState(0);
   const [isTestDone, setIsTestDone] = useState(false);
   const [isTestStarted, setIsTestStarted] = useState(false);
-  const [time, setTime] = useState({ start: null, end: null });
+  const [time, setTime] = useState({
+    start: null,
+    end: null,
+  });
+  const [countdown, setCountdown] = useState(config.timedTestDuration);
   const [typedCharacters, setTypedCharacters] = useState(0);
   const [typedErrors, setTypedErrors] = useState(0);
 
@@ -157,6 +161,25 @@ const TypingTest = () => {
     return () => window.removeEventListener('resize', getwidth);
   }, []);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown(() => {
+        if (config.isTimedTest && isTestStarted && !isTestDone)
+          return countdown - 1;
+        return countdown;
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [config.isTimedTest, countdown, isTestStarted, isTestDone]);
+
+  useEffect(() => {
+    if (countdown === 0 && !isTestDone) {
+      setTime({ ...time, end: new Date() });
+      setIsTestDone(true);
+    }
+  }, [countdown, setTime, time, setIsTestDone, isTestDone]);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
@@ -176,6 +199,7 @@ const TypingTest = () => {
           <p>typed chars: {typedCharacters}</p>
           <p>typed errors: {typedErrors}</p>
           <p>width: {width}</p>
+          <p>countdown: {countdown} s</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <h2>Typing Area</h2>
