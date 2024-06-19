@@ -398,12 +398,12 @@ const TypingTest = () => {
         <p>config: {JSON.stringify(config)}</p>
         <p>words length: {words.length}</p>
         <p>word index: {wordIndex}</p>
-        <p>words object: {JSON.stringify(wordsObject)}</p>
+        {/* <p>words object: {JSON.stringify(wordsObject)}</p> */}
         <p>letter index: {letterIndex}</p>
         <p>typed: {wordsObject[wordIndex].typed}</p>
         <p>typed index: {typedIndex}</p>
-        <p>current word: {words[wordIndex]}</p>
-        <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
+        {/* <p>current word: {words[wordIndex]}</p>
+        <p>next letter: {words[wordIndex].charAt(letterIndex)}</p> */}
         <p>test done? {String(isTestDone)}</p>
         <p>start time: {JSON.stringify(time)} </p>
         <p>typed chars: {typedCharacters}</p>
