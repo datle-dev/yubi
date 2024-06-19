@@ -388,6 +388,9 @@ const TypingTest = () => {
                 key={index}
                 word={wordObject.word}
                 typed={wordObject.typed}
+                index={index}
+                wordIndex={wordIndex}
+                wordRowMap={wordRowMap}
               />
             );
           })}
