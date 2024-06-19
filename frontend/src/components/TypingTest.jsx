@@ -290,6 +290,26 @@ const TypingTest = () => {
           isWordsTest={config.isWordsTest}
           onClickHandleConfig={handleConfigOptions}
         />
+        <div>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            list="english-100"
+            onClick={handleGetWordList}
+          >
+            English 100
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            list="hololive-en"
+            onClick={handleGetWordList}
+          >
+            Hololive EN
+          </button>
+        </div>
         <h2>Typing Area</h2>
         <Counter current={wordIndex} total={wordsObject.length} />
         <div
