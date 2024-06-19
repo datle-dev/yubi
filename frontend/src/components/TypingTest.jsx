@@ -108,7 +108,7 @@ const TypingTest = () => {
         let newWordIndex = wordIndex + 1;
 
         // if already on last word, end typing test
-        if (newWordIndex >= wordsObject.length) {
+        if (newWordIndex >= wordsObject.length && config.isWordsTest) {
           setIsTestDone(true);
           setTime({ ...time, end: new Date() });
           return;
@@ -158,7 +158,8 @@ const TypingTest = () => {
         // if user on last word and typed word matches, end typing test
         if (
           wordIndex === wordsObject.length - 1 &&
-          newWordsObject[wordIndex].typed === currentWord
+          newWordsObject[wordIndex].typed === currentWord &&
+          config.isWordsTest
         ) {
           setIsTestDone(true);
           setTime({ ...time, end: new Date() });
