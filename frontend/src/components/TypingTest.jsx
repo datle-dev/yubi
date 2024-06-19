@@ -238,13 +238,31 @@ const TypingTest = () => {
         timedTestDuration: e.target.getAttribute('duration'),
       });
       setCountdown(Number(e.target.getAttribute('duration')));
+      resetTest();
     }
     if (config.isWordsTest) {
       setConfig({ ...config, wordsTestTarget: e.target.getAttribute('words') });
       setWordsObject(
         mapWords(getRandomWords(words, e.target.getAttribute('words'))),
       );
+      resetTest();
     }
+  }
+
+  function resetTest() {
+    setWordIndex(0);
+    setLetterIndex(0);
+    setTypedIndex(0);
+    setIsTestDone(false);
+    setIsTestStarted(false);
+    setTime({
+      start: null,
+      end: null,
+    });
+    setCountdown(config.timedTestDuration);
+    setTypedCharacters(0);
+    setTypedErrors(0);
+    setWordsObject(mapWords(words));
   }
 
   const [rowOffsets, setRowOffsets] = useState({});
@@ -301,6 +319,15 @@ const TypingTest = () => {
           <p>word row map: {JSON.stringify(wordRowMap)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
+        <div>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            onClick={resetTest}
+          >
+            reset
+          </button>
+        </div>
         <div>
           <button
             type="button"
