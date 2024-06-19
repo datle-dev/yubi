@@ -25,20 +25,29 @@ const TypingTest = () => {
     'dog',
   ]);
 
+  const [wordIndex, setWordIndex] = useState(0);
+  const [letterIndex, setLetterIndex] = useState(0);
+  const [typedIndex, setTypedIndex] = useState(0);
+  const [isTestDone, setIsTestDone] = useState(false);
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [time, setTime] = useState({
+    start: null,
+    end: null,
+  });
+  const [countdown, setCountdown] = useState(config.timedTestDuration);
+  const [typedCharacters, setTypedCharacters] = useState(0);
+  const [typedErrors, setTypedErrors] = useState(0);
+
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+
+  const [wordRowMap, setWordRowMap] = useState({});
+
   function getRandomWords(wordArray, targetNum) {
     let randomizedWords = [];
-    let visitedIndices = [];
 
-    const wordLimit = Math.min(wordArray.length, targetNum);
-
-    for (let i = 0; i < wordLimit; i++) {
+    for (let i = 0; i < targetNum; i++) {
       let index = Math.floor(Math.random() * wordArray.length);
-
-      while (visitedIndices.includes(index)) {
-        index = Math.floor(Math.random() * wordArray.length);
-      }
-
-      visitedIndices.push(index);
       randomizedWords.push(wordArray[index]);
     }
 
@@ -63,29 +72,21 @@ const TypingTest = () => {
     return wordArray;
   }
 
-  const [wordsObject, setWordsObject] = useState(mapWords(words));
+  const [wordsObject, setWordsObject] = useState(() => {
+    if (config.isTimedTest) {
+      return mapWords(getRandomWords(words, 500));
+    } else if (config.isWordsTest) {
+      return mapWords(getRandomWords(words, config.wordsTestTarget));
+    }
+  });
 
   useEffect(() => {
-    setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
-  }, [words, config.wordsTestTarget]);
-
-  const [wordIndex, setWordIndex] = useState(0);
-  const [letterIndex, setLetterIndex] = useState(0);
-  const [typedIndex, setTypedIndex] = useState(0);
-  const [isTestDone, setIsTestDone] = useState(false);
-  const [isTestStarted, setIsTestStarted] = useState(false);
-  const [time, setTime] = useState({
-    start: null,
-    end: null,
-  });
-  const [countdown, setCountdown] = useState(config.timedTestDuration);
-  const [typedCharacters, setTypedCharacters] = useState(0);
-  const [typedErrors, setTypedErrors] = useState(0);
-
-  const ref = useRef(null);
-  const [width, setWidth] = useState(0);
-
-  const [wordRowMap, setWordRowMap] = useState({});
+    if (config.isTimedTest) {
+      setWordsObject(mapWords(getRandomWords(words, 500)));
+    } else if (config.isWordsTest) {
+      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    }
+  }, [words, config]);
 
   useEffect(() => {
     function handleKeydown(e) {
@@ -262,7 +263,11 @@ const TypingTest = () => {
     setCountdown(config.timedTestDuration);
     setTypedCharacters(0);
     setTypedErrors(0);
-    setWordsObject(mapWords(words));
+    if (config.isTimedTest) {
+      setWordsObject(mapWords(getRandomWords(words, 500)));
+    } else if (config.isWordsTest) {
+      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    }
   }
 
   const [rowOffsets, setRowOffsets] = useState({});
