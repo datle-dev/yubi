@@ -7,6 +7,7 @@ export default function Cursor({
 }) {
   let prevWordsCharCount = 0;
   let spacesCount = wordIndex;
+  const rowMultiplier = wordRowMap[wordIndex] === 0 ? 0 : 1;
 
   for (let i = 0; i < wordIndex; i++) {
     prevWordsCharCount += Math.max(
@@ -18,7 +19,7 @@ export default function Cursor({
   // need to use style prop and perform CSS calc() operations in template
   // literal, otherwise calc() doesn't resolve
   const style = {
-    top: `calc(32px * ${wordRowMap[wordIndex]})`,
+    top: `calc(32px * ${rowMultiplier})`,
     left: `calc(-2px
       + (14.4px * ${letterIndex})
       + (14.4px * ${prevWordsCharCount})
