@@ -25,20 +25,29 @@ const TypingTest = () => {
     'dog',
   ]);
 
+  const [wordIndex, setWordIndex] = useState(0);
+  const [letterIndex, setLetterIndex] = useState(0);
+  const [typedIndex, setTypedIndex] = useState(0);
+  const [isTestDone, setIsTestDone] = useState(false);
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [time, setTime] = useState({
+    start: null,
+    end: null,
+  });
+  const [countdown, setCountdown] = useState(config.timedTestDuration);
+  const [typedCharacters, setTypedCharacters] = useState(0);
+  const [typedErrors, setTypedErrors] = useState(0);
+
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+
+  const [wordRowMap, setWordRowMap] = useState({});
+
   function getRandomWords(wordArray, targetNum) {
     let randomizedWords = [];
-    let visitedIndices = [];
 
-    const wordLimit = Math.min(wordArray.length, targetNum);
-
-    for (let i = 0; i < wordLimit; i++) {
+    for (let i = 0; i < targetNum; i++) {
       let index = Math.floor(Math.random() * wordArray.length);
-
-      while (visitedIndices.includes(index)) {
-        index = Math.floor(Math.random() * wordArray.length);
-      }
-
-      visitedIndices.push(index);
       randomizedWords.push(wordArray[index]);
     }
 
@@ -63,27 +72,21 @@ const TypingTest = () => {
     return wordArray;
   }
 
-  const [wordsObject, setWordsObject] = useState(mapWords(words));
+  const [wordsObject, setWordsObject] = useState(() => {
+    if (config.isTimedTest) {
+      return mapWords(getRandomWords(words, 500));
+    } else if (config.isWordsTest) {
+      return mapWords(getRandomWords(words, config.wordsTestTarget));
+    }
+  });
 
   useEffect(() => {
-    setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
-  }, [words, config.wordsTestTarget]);
-
-  const [wordIndex, setWordIndex] = useState(0);
-  const [letterIndex, setLetterIndex] = useState(0);
-  const [typedIndex, setTypedIndex] = useState(0);
-  const [isTestDone, setIsTestDone] = useState(false);
-  const [isTestStarted, setIsTestStarted] = useState(false);
-  const [time, setTime] = useState({
-    start: null,
-    end: null,
-  });
-  const [countdown, setCountdown] = useState(config.timedTestDuration);
-  const [typedCharacters, setTypedCharacters] = useState(0);
-  const [typedErrors, setTypedErrors] = useState(0);
-
-  const ref = useRef(null);
-  const [width, setWidth] = useState(0);
+    if (config.isTimedTest) {
+      setWordsObject(mapWords(getRandomWords(words, 500)));
+    } else if (config.isWordsTest) {
+      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    }
+  }, [words, config]);
 
   useEffect(() => {
     function handleKeydown(e) {
@@ -105,7 +108,7 @@ const TypingTest = () => {
         let newWordIndex = wordIndex + 1;
 
         // if already on last word, end typing test
-        if (newWordIndex >= wordsObject.length) {
+        if (newWordIndex >= wordsObject.length && config.isWordsTest) {
           setIsTestDone(true);
           setTime({ ...time, end: new Date() });
           return;
@@ -155,7 +158,8 @@ const TypingTest = () => {
         // if user on last word and typed word matches, end typing test
         if (
           wordIndex === wordsObject.length - 1 &&
-          newWordsObject[wordIndex].typed === currentWord
+          newWordsObject[wordIndex].typed === currentWord &&
+          config.isWordsTest
         ) {
           setIsTestDone(true);
           setTime({ ...time, end: new Date() });
@@ -236,37 +240,79 @@ const TypingTest = () => {
         timedTestDuration: e.target.getAttribute('duration'),
       });
       setCountdown(Number(e.target.getAttribute('duration')));
+      resetTest();
     }
     if (config.isWordsTest) {
       setConfig({ ...config, wordsTestTarget: e.target.getAttribute('words') });
       setWordsObject(
         mapWords(getRandomWords(words, e.target.getAttribute('words'))),
       );
+      resetTest();
     }
   }
+
+  function resetTest() {
+    setWordIndex(0);
+    setLetterIndex(0);
+    setTypedIndex(0);
+    setIsTestDone(false);
+    setIsTestStarted(false);
+    setTime({
+      start: null,
+      end: null,
+    });
+    setCountdown(config.timedTestDuration);
+    setTypedCharacters(0);
+    setTypedErrors(0);
+    if (config.isTimedTest) {
+      setWordsObject(mapWords(getRandomWords(words, 500)));
+    } else if (config.isWordsTest) {
+      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    }
+  }
+
+  const [rowOffsets, setRowOffsets] = useState({});
+
+  useEffect(() => {
+    let row = 0;
+    let sumWidth = 0;
+
+    let rowOffsetsTemp = { 0: 0 };
+    let wordRowMapTemp = {};
+
+    for (let i = 0; i < wordsObject.length; i++) {
+      const wordLength = Math.max(
+        wordsObject[i].word.length,
+        wordsObject[i].typed.length,
+      );
+      const wordSpacing = (wordLength + 1) * 14.4; // 14.4px per character + one space
+      sumWidth += wordSpacing;
+
+      if (sumWidth > width) {
+        row += 1;
+        rowOffsetsTemp[row] = sumWidth - wordSpacing + rowOffsetsTemp[row - 1];
+        sumWidth = wordSpacing;
+      }
+
+      wordRowMapTemp[i] = row;
+    }
+
+    setRowOffsets(rowOffsetsTemp);
+    setWordRowMap(wordRowMapTemp);
+  }, [width, wordsObject]);
 
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        <h2>Debug Info</h2>
         <div>
-          <p>config: {JSON.stringify(config)}</p>
-          <p>words length: {words.length}</p>
-          <p>word index: {wordIndex}</p>
-          <p>words object: {JSON.stringify(wordsObject)}</p>
-          <p>letter index: {letterIndex}</p>
-          <p>typed: {wordsObject[wordIndex].typed}</p>
-          <p>typed index: {typedIndex}</p>
-          <p>current word: {words[wordIndex]}</p>
-          <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
-          <p>test done? {String(isTestDone)}</p>
-          <p>start time: {JSON.stringify(time)} </p>
-          <p>typed chars: {typedCharacters}</p>
-          <p>typed errors: {typedErrors}</p>
-          <p>width: {width}</p>
-          <p>countdown: {countdown} s</p>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            onClick={resetTest}
+          >
+            reset
+          </button>
         </div>
-        {isTestDone && <h2>Test done!</h2>}
         <div>
           <button
             type="button"
@@ -320,7 +366,8 @@ const TypingTest = () => {
             wordsObject={wordsObject}
             wordIndex={wordIndex}
             letterIndex={letterIndex}
-            containerWidth={width}
+            wordRowMap={wordRowMap}
+            rowOffsets={rowOffsets}
           />
           {wordsObject.map((wordObject, index) => {
             return (
@@ -328,10 +375,14 @@ const TypingTest = () => {
                 key={index}
                 word={wordObject.word}
                 typed={wordObject.typed}
+                index={index}
+                wordIndex={wordIndex}
+                wordRowMap={wordRowMap}
               />
             );
           })}
         </div>
+        {isTestDone && <h2>Test done!</h2>}
         {isTestDone && (
           <Stats
             wordsObject={wordsObject}
@@ -341,6 +392,24 @@ const TypingTest = () => {
             endTime={time.end}
           />
         )}
+      </div>
+      <h2>Debug Info</h2>
+      <div>
+        <p>config: {JSON.stringify(config)}</p>
+        <p>words length: {words.length}</p>
+        <p>word index: {wordIndex}</p>
+        {/* <p>words object: {JSON.stringify(wordsObject)}</p> */}
+        <p>letter index: {letterIndex}</p>
+        <p>typed: {wordsObject[wordIndex].typed}</p>
+        <p>typed index: {typedIndex}</p>
+        {/* <p>current word: {words[wordIndex]}</p>
+        <p>next letter: {words[wordIndex].charAt(letterIndex)}</p> */}
+        <p>test done? {String(isTestDone)}</p>
+        <p>start time: {JSON.stringify(time)} </p>
+        <p>typed chars: {typedCharacters}</p>
+        <p>typed errors: {typedErrors}</p>
+        <p>width: {width}</p>
+        <p>countdown: {countdown} s</p>
       </div>
     </>
   );
