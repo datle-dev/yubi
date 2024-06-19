@@ -315,8 +315,6 @@ const TypingTest = () => {
           <p>typed errors: {typedErrors}</p>
           <p>width: {width}</p>
           <p>countdown: {countdown} s</p>
-          <p>row offsets: {JSON.stringify(rowOffsets)}</p>
-          <p>word row map: {JSON.stringify(wordRowMap)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <div>
