@@ -85,6 +85,8 @@ const TypingTest = () => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
 
+  const [wordRowMap, setWordRowMap] = useState({});
+
   useEffect(() => {
     function handleKeydown(e) {
       const currentWord = wordsObject[wordIndex].word;
@@ -245,6 +247,36 @@ const TypingTest = () => {
     }
   }
 
+  const [rowOffsets, setRowOffsets] = useState({});
+
+  useEffect(() => {
+    let row = 0;
+    let sumWidth = 0;
+
+    let rowOffsetsTemp = { 0: 0 };
+    let wordRowMapTemp = {};
+
+    for (let i = 0; i < wordsObject.length; i++) {
+      const wordLength = Math.max(
+        wordsObject[i].word.length,
+        wordsObject[i].typed.length,
+      );
+      const wordSpacing = (wordLength + 1) * 14.4; // 14.4px per character + one space
+      sumWidth += wordSpacing;
+
+      if (sumWidth > width) {
+        row += 1;
+        rowOffsetsTemp[row] = sumWidth - wordSpacing + rowOffsetsTemp[row - 1];
+        sumWidth = wordSpacing;
+      }
+
+      wordRowMapTemp[i] = row;
+    }
+
+    setRowOffsets(rowOffsetsTemp);
+    setWordRowMap(wordRowMapTemp);
+  }, [width]);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center">
@@ -265,6 +297,8 @@ const TypingTest = () => {
           <p>typed errors: {typedErrors}</p>
           <p>width: {width}</p>
           <p>countdown: {countdown} s</p>
+          <p>row offsets: {JSON.stringify(rowOffsets)}</p>
+          <p>word row map: {JSON.stringify(wordRowMap)}</p>
         </div>
         {isTestDone && <h2>Test done!</h2>}
         <div>
@@ -320,7 +354,8 @@ const TypingTest = () => {
             wordsObject={wordsObject}
             wordIndex={wordIndex}
             letterIndex={letterIndex}
-            containerWidth={width}
+            wordRowMap={wordRowMap}
+            rowOffsets={rowOffsets}
           />
           {wordsObject.map((wordObject, index) => {
             return (
