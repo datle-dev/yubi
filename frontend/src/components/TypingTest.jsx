@@ -298,25 +298,6 @@ const TypingTest = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center">
-        <h2>Debug Info</h2>
-        <div>
-          <p>config: {JSON.stringify(config)}</p>
-          <p>words length: {words.length}</p>
-          <p>word index: {wordIndex}</p>
-          <p>words object: {JSON.stringify(wordsObject)}</p>
-          <p>letter index: {letterIndex}</p>
-          <p>typed: {wordsObject[wordIndex].typed}</p>
-          <p>typed index: {typedIndex}</p>
-          <p>current word: {words[wordIndex]}</p>
-          <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
-          <p>test done? {String(isTestDone)}</p>
-          <p>start time: {JSON.stringify(time)} </p>
-          <p>typed chars: {typedCharacters}</p>
-          <p>typed errors: {typedErrors}</p>
-          <p>width: {width}</p>
-          <p>countdown: {countdown} s</p>
-        </div>
-        {isTestDone && <h2>Test done!</h2>}
         <div>
           <button
             type="button"
@@ -395,6 +376,7 @@ const TypingTest = () => {
             );
           })}
         </div>
+        {isTestDone && <h2>Test done!</h2>}
         {isTestDone && (
           <Stats
             wordsObject={wordsObject}
@@ -404,6 +386,24 @@ const TypingTest = () => {
             endTime={time.end}
           />
         )}
+      </div>
+      <h2>Debug Info</h2>
+      <div>
+        <p>config: {JSON.stringify(config)}</p>
+        <p>words length: {words.length}</p>
+        <p>word index: {wordIndex}</p>
+        <p>words object: {JSON.stringify(wordsObject)}</p>
+        <p>letter index: {letterIndex}</p>
+        <p>typed: {wordsObject[wordIndex].typed}</p>
+        <p>typed index: {typedIndex}</p>
+        <p>current word: {words[wordIndex]}</p>
+        <p>next letter: {words[wordIndex].charAt(letterIndex)}</p>
+        <p>test done? {String(isTestDone)}</p>
+        <p>start time: {JSON.stringify(time)} </p>
+        <p>typed chars: {typedCharacters}</p>
+        <p>typed errors: {typedErrors}</p>
+        <p>width: {width}</p>
+        <p>countdown: {countdown} s</p>
       </div>
     </>
   );
