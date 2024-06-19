@@ -6,7 +6,14 @@ import Counter from './Counter.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
 
 const TypingTest = () => {
-  const words = [
+  const [config, setConfig] = useState({
+    isTimedTest: true,
+    timedTestDuration: 10, // seconds
+    isWordsTest: false,
+    wordsTestTarget: 25,
+  });
+
+  const [words, setWords] = useState([
     'the',
     'quick',
     'brown',
@@ -16,7 +23,7 @@ const TypingTest = () => {
     'the',
     'lazy',
     'dog',
-  ];
+  ]);
 
   const [wordsObject, setWordsObject] = useState(
     words.map((word) => ({
@@ -25,12 +32,6 @@ const TypingTest = () => {
     })),
   );
 
-  const [config, setConfig] = useState({
-    isTimedTest: true,
-    timedTestDuration: 10, // seconds
-    isWordsTest: false,
-    wordsTestTarget: 25,
-  });
 
   const [wordIndex, setWordIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
