@@ -25,13 +25,49 @@ const TypingTest = () => {
     'dog',
   ]);
 
-  const [wordsObject, setWordsObject] = useState(
-    words.map((word) => ({
+  function getRandomWords(wordArray, targetNum) {
+    let randomizedWords = [];
+    let visitedIndices = [];
+
+    const wordLimit = Math.min(wordArray.length, targetNum);
+
+    for (let i = 0; i < wordLimit; i++) {
+      let index = Math.floor(Math.random() * wordArray.length);
+
+      while (visitedIndices.includes(index)) {
+        index = Math.floor(Math.random() * wordArray.length);
+      }
+
+      visitedIndices.push(index);
+      randomizedWords.push(wordArray[index]);
+    }
+
+    return randomizedWords;
+  }
+
+  async function handleGetWordList(e) {
+    const listName = e.target.getAttribute('list');
+    await fetch(`http://localhost:3000/${listName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setWords(data.words);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function mapWords(words) {
+    const wordArray = words.map((word) => ({
       word: word,
       typed: '',
-    })),
-  );
+    }));
+    return wordArray;
+  }
 
+  const [wordsObject, setWordsObject] = useState(mapWords(words));
+
+  useEffect(() => {
+    setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+  }, [words, config.wordsTestTarget]);
 
   const [wordIndex, setWordIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
@@ -203,6 +239,9 @@ const TypingTest = () => {
     }
     if (config.isWordsTest) {
       setConfig({ ...config, wordsTestTarget: e.target.getAttribute('words') });
+      setWordsObject(
+        mapWords(getRandomWords(words, e.target.getAttribute('words'))),
+      );
     }
   }
 
