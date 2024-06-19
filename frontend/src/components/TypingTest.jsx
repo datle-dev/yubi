@@ -293,7 +293,7 @@ const TypingTest = () => {
 
     setRowOffsets(rowOffsetsTemp);
     setWordRowMap(wordRowMapTemp);
-  }, [width]);
+  }, [width, wordsObject]);
 
   return (
     <>
