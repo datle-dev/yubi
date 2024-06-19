@@ -6,7 +6,14 @@ import Counter from './Counter.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
 
 const TypingTest = () => {
-  const words = [
+  const [config, setConfig] = useState({
+    isTimedTest: true,
+    timedTestDuration: 10, // seconds
+    isWordsTest: false,
+    wordsTestTarget: 25,
+  });
+
+  const [words, setWords] = useState([
     'the',
     'quick',
     'brown',
@@ -16,21 +23,51 @@ const TypingTest = () => {
     'the',
     'lazy',
     'dog',
-  ];
+  ]);
 
-  const [wordsObject, setWordsObject] = useState(
-    words.map((word) => ({
+  function getRandomWords(wordArray, targetNum) {
+    let randomizedWords = [];
+    let visitedIndices = [];
+
+    const wordLimit = Math.min(wordArray.length, targetNum);
+
+    for (let i = 0; i < wordLimit; i++) {
+      let index = Math.floor(Math.random() * wordArray.length);
+
+      while (visitedIndices.includes(index)) {
+        index = Math.floor(Math.random() * wordArray.length);
+      }
+
+      visitedIndices.push(index);
+      randomizedWords.push(wordArray[index]);
+    }
+
+    return randomizedWords;
+  }
+
+  async function handleGetWordList(e) {
+    const listName = e.target.getAttribute('list');
+    await fetch(`http://localhost:3000/${listName}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setWords(data.words);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function mapWords(words) {
+    const wordArray = words.map((word) => ({
       word: word,
       typed: '',
-    })),
-  );
+    }));
+    return wordArray;
+  }
 
-  const [config, setConfig] = useState({
-    isTimedTest: true,
-    timedTestDuration: 10, // seconds
-    isWordsTest: false,
-    wordsTestTarget: 25,
-  });
+  const [wordsObject, setWordsObject] = useState(mapWords(words));
+
+  useEffect(() => {
+    setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+  }, [words, config.wordsTestTarget]);
 
   const [wordIndex, setWordIndex] = useState(0);
   const [letterIndex, setLetterIndex] = useState(0);
@@ -202,6 +239,9 @@ const TypingTest = () => {
     }
     if (config.isWordsTest) {
       setConfig({ ...config, wordsTestTarget: e.target.getAttribute('words') });
+      setWordsObject(
+        mapWords(getRandomWords(words, e.target.getAttribute('words'))),
+      );
     }
   }
 
@@ -250,6 +290,26 @@ const TypingTest = () => {
           isWordsTest={config.isWordsTest}
           onClickHandleConfig={handleConfigOptions}
         />
+        <div>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            list="english-100"
+            onClick={handleGetWordList}
+          >
+            English 100
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            list="hololive-en"
+            onClick={handleGetWordList}
+          >
+            Hololive EN
+          </button>
+        </div>
         <h2>Typing Area</h2>
         <Counter current={wordIndex} total={wordsObject.length} />
         <div
