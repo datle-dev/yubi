@@ -4,6 +4,8 @@ import Stats from './Stats.jsx';
 import Cursor from './Cursor.jsx';
 import Counter from './Counter.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
+import ModeButton from './ModeButton.jsx';
+import WordListButton from './WordListButton.jsx';
 
 const TypingTest = () => {
   const [config, setConfig] = useState({
@@ -314,22 +316,8 @@ const TypingTest = () => {
           </button>
         </div>
         <div>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            mode="time"
-            onClick={handleTestMode}
-          >
-            time
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            mode="word"
-            onClick={handleTestMode}
-          >
-            words
-          </button>
+          <ModeButton text={'time'} mode={'time'} onClick={handleTestMode} />
+          <ModeButton text={'word'} mode={'word'} onClick={handleTestMode} />
         </div>
         <ConfigOptions
           isTimedTest={config.isTimedTest}
@@ -337,24 +325,16 @@ const TypingTest = () => {
           onClickHandleConfig={handleConfigOptions}
         />
         <div>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            list="english-100"
+          <WordListButton
+            text={'english-100'}
+            list={'english-100'}
             onClick={handleGetWordList}
-          >
-            English 100
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            list="hololive-en"
+          />
+          <WordListButton
+            text={'hololive-en'}
+            list={'hololive-en'}
             onClick={handleGetWordList}
-          >
-            Hololive EN
-          </button>
+          />
         </div>
         <h2>Typing Area</h2>
         <Counter current={wordIndex} total={wordsObject.length} />
