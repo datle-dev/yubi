@@ -364,16 +364,14 @@ const TypingTest = () => {
   return (
     <>
       <div className="flex flex-col justify-center items-center px-4">
-        <div>
+        <section className="flex flex-col gap-2 my-4">
           <button
             type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            className="bg-sky-950 text-sky-300/50 hover:text-sky-200 p-2"
             onClick={handleReset}
           >
             reset
           </button>
-        </div>
-        <section className="flex flex-col gap-2 my-4">
           <div className="flex justify-between gap-4">
             <div>
               <ModeButton
