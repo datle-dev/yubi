@@ -104,6 +104,8 @@ const TypingTest = () => {
 
   useEffect(() => {
     function handleKeydown(e) {
+      e.preventDefault();
+
       if (status.isDone) {
         if (e.key === 'Enter') {
           handleReset();
