@@ -361,7 +361,7 @@ const TypingTest = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center mx-4">
         <div>
           <button
             type="button"
@@ -398,7 +398,7 @@ const TypingTest = () => {
         {config.isTimeMode && <p>{timer}s</p>}
         <div
           ref={ref}
-          className="relative flex justify-start flex-wrap max-w-3xl"
+          className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 my-6"
         >
           <Cursor
             tracker={tracker}
