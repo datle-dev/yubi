@@ -4,6 +4,7 @@ export default function Stats({
   countErrors,
   timeStart,
   timeEnd,
+  isTimeMode,
 }) {
   let errors = 0;
   let extras = 0;
@@ -12,6 +13,8 @@ export default function Stats({
   for (const entry of tracker) {
     const word = entry.expected;
     const typed = entry.typed;
+
+    if (isTimeMode && typed === '') continue;
 
     const maxLength = Math.max(word.length, typed.length);
 
