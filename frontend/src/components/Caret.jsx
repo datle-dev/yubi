@@ -1,4 +1,4 @@
-export default function Cursor({
+export default function Caret({
   tracker,
   indexWord,
   indexLetter,
