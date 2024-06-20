@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Word from './Word';
 import Stats from './Stats.jsx';
-import Cursor from './Cursor.jsx';
-import Counter from './Counter.jsx';
+import Caret from './Caret.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
 import ModeButton from './buttons/ModeButton.jsx';
 import WordListButton from './buttons/WordListButton.jsx';
@@ -468,13 +467,16 @@ const TypingTest = () => {
             className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein"
             style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
-            <Cursor
-              tracker={tracker}
-              indexWord={index.word}
-              indexLetter={index.letter}
-              wordRowMap={wordRowMap}
-              rowOffsets={rowOffsets}
-            />
+            {!status.isDone && (
+              <Caret
+                tracker={tracker}
+                indexWord={index.word}
+                indexLetter={index.letter}
+                wordRowMap={wordRowMap}
+                rowOffsets={rowOffsets}
+                isStarted={status.isStarted}
+              />
+            )}
             {tracker.map((entry, ind) => {
               return (
                 <Word

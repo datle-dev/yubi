@@ -1,9 +1,10 @@
-export default function Cursor({
+export default function Caret({
   tracker,
   indexWord,
   indexLetter,
   wordRowMap,
   rowOffsets,
+  isStarted,
 }) {
   let prevWordsCharCount = 0;
   let spacesCount = indexWord;
@@ -29,7 +30,10 @@ export default function Cursor({
 
   return (
     <div
-      className="absolute w-1 h-8 rounded animate-blink bg-green-300"
+      className={
+        'absolute w-1 h-8 rounded bg-green-300' +
+        (isStarted ? '' : ' animate-blink')
+      }
       style={style}
     ></div>
   );
