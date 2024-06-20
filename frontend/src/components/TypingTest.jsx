@@ -13,6 +13,7 @@ const TypingTest = () => {
     timeModeDuration: 15, // seconds
     isWordMode: false,
     wordModeCount: 25,
+    wordList: 'default',
   });
 
   const [wordList, setWordList] = useState([
@@ -72,6 +73,7 @@ const TypingTest = () => {
       .then((res) => res.json())
       .then((data) => {
         setWordList(data.words);
+        setConfig({ ...config, wordList: listName });
       })
       .catch((err) => console.log(err));
   }
@@ -378,16 +380,20 @@ const TypingTest = () => {
                 text={'time'}
                 mode={'time'}
                 onClick={handleTestMode}
+                isActive={config.isTimeMode}
               />
               <ModeButton
                 text={'word'}
                 mode={'word'}
                 onClick={handleTestMode}
+                isActive={config.isWordMode}
               />
             </div>
             <ConfigOptions
               isTimeMode={config.isTimeMode}
               isWordMode={config.isWordMode}
+              timeModeDuration={config.timeModeDuration}
+              wordModeCount={config.wordModeCount}
               onClick={handleConfigOptions}
             />
           </div>
@@ -396,11 +402,13 @@ const TypingTest = () => {
               text={'english-100'}
               list={'english-100'}
               onClick={handleGetWordList}
+              isActive={config.wordList === 'english-100'}
             />
             <WordListButton
               text={'hololive-en'}
               list={'hololive-en'}
               onClick={handleGetWordList}
+              isActive={config.wordList === 'hololive-en'}
             />
           </div>
         </section>
