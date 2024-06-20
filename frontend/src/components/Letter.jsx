@@ -1,9 +1,9 @@
 export default function Letter({ letter, letterType }) {
   const color = {
-    normal: 'text-gray-500',
-    extra: 'text-amber-500',
-    correct: 'text-green-500',
-    wrong: 'text-red-500',
+    normal: 'text-sky-300/50',
+    extra: 'text-red-300',
+    correct: 'text-sky-50',
+    wrong: 'text-red-400',
   };
 
   return (
