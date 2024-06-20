@@ -446,20 +446,28 @@ const TypingTest = () => {
           </div>
         </section>
         <section className="flex flex-col gap-2 justify-center items-center my-4">
-          {!status.isStarted && <p className="text-2xl">type to begin test</p>}
-          {config.isWordMode && status.isStarted && !status.isDone && (
-            <p className="text-2xl">
-              {index.word}/{tracker.length}
-            </p>
+          {!status.isStarted && !status.isLoading && (
+            <p className="animate-fadein text-2xl">type to begin test</p>
           )}
-          {config.isTimeMode && status.isStarted && !status.isDone && (
-            <p className="text-2xl">{timer}s</p>
+          {config.isWordMode &&
+            status.isStarted &&
+            !status.isDone &&
+            !status.isLoading && (
+              <p className="animate-fadein text-2xl">
+                {index.word}/{tracker.length}
+              </p>
+            )}
+          {config.isTimeMode &&
+            status.isStarted &&
+            !status.isDone &&
+            !status.isLoading && (
+              <p className="animate-fadein text-2xl">{timer}s</p>
+            )}
+          {status.isDone && (
+            <p className="animate-fadein text-2xl">test complete</p>
           )}
-          {status.isDone && <p className="text-2xl">test complete</p>}
           {status.isLoading && (
-            <div className="flex items-center text-4xl min-h-32">
-              <p>Loading...</p>
-            </div>
+            <p className="animate-fadein text-2xl">loading...</p>
           )}
           <div
             key={typingWindowKey}
