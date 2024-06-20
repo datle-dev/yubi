@@ -361,7 +361,7 @@ const TypingTest = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center mx-4">
+      <div className="flex flex-col justify-center items-center px-4">
         <div>
           <button
             type="button"
@@ -371,63 +371,81 @@ const TypingTest = () => {
             reset
           </button>
         </div>
-        <div>
-          <ModeButton text={'time'} mode={'time'} onClick={handleTestMode} />
-          <ModeButton text={'word'} mode={'word'} onClick={handleTestMode} />
-        </div>
-        <ConfigOptions
-          isTimeMode={config.isTimeMode}
-          isWordMode={config.isWordMode}
-          onClick={handleConfigOptions}
-        />
-        <div>
-          <WordListButton
-            text={'english-100'}
-            list={'english-100'}
-            onClick={handleGetWordList}
-          />
-          <WordListButton
-            text={'hololive-en'}
-            list={'hololive-en'}
-            onClick={handleGetWordList}
-          />
-        </div>
-        {config.isWordMode && (
-          <Counter current={index.word} total={tracker.length} />
-        )}
-        {config.isTimeMode && <p>{timer}s</p>}
-        <div
-          ref={ref}
-          className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 my-6"
-        >
-          <Cursor
-            tracker={tracker}
-            indexWord={index.word}
-            indexLetter={index.letter}
-            wordRowMap={wordRowMap}
-            rowOffsets={rowOffsets}
-          />
-          {tracker.map((entry, ind) => {
-            return (
-              <Word
-                key={ind}
-                expected={entry.expected}
-                typed={entry.typed}
-                index={ind}
-                indexWord={index.word}
-                wordRowMap={wordRowMap}
+        <section className="flex flex-col gap-2 my-4">
+          <div className="flex justify-between gap-4">
+            <div>
+              <ModeButton
+                text={'time'}
+                mode={'time'}
+                onClick={handleTestMode}
               />
-            );
-          })}
-        </div>
+              <ModeButton
+                text={'word'}
+                mode={'word'}
+                onClick={handleTestMode}
+              />
+            </div>
+            <ConfigOptions
+              isTimeMode={config.isTimeMode}
+              isWordMode={config.isWordMode}
+              onClick={handleConfigOptions}
+            />
+          </div>
+          <div className="flex justify-center gap-2">
+            <WordListButton
+              text={'english-100'}
+              list={'english-100'}
+              onClick={handleGetWordList}
+            />
+            <WordListButton
+              text={'hololive-en'}
+              list={'hololive-en'}
+              onClick={handleGetWordList}
+            />
+          </div>
+        </section>
+        <section className="flex flex-col gap-2 justify-center items-center my-4">
+          {config.isWordMode && (
+            <p className="text-2xl">
+              {index.word}/{tracker.length}
+            </p>
+          )}
+          {config.isTimeMode && <p className="text-2xl">{timer}s</p>}
+          <div
+            ref={ref}
+            className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+          >
+            <Cursor
+              tracker={tracker}
+              indexWord={index.word}
+              indexLetter={index.letter}
+              wordRowMap={wordRowMap}
+              rowOffsets={rowOffsets}
+            />
+            {tracker.map((entry, ind) => {
+              return (
+                <Word
+                  key={ind}
+                  expected={entry.expected}
+                  typed={entry.typed}
+                  index={ind}
+                  indexWord={index.word}
+                  wordRowMap={wordRowMap}
+                />
+              );
+            })}
+          </div>
+        </section>
         {status.isDone && (
-          <Stats
-            tracker={tracker}
-            countTyped={count.typed}
-            countErrors={count.errors}
-            timeStart={time.start}
-            timeEnd={time.end}
-          />
+          <section>
+            <Stats
+              tracker={tracker}
+              countTyped={count.typed}
+              countErrors={count.errors}
+              timeStart={time.start}
+              timeEnd={time.end}
+            />
+          </section>
         )}
       </div>
     </>

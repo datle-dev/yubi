@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import Header from './components/Header';
 import TypingTest from './components/TypingTest';
 
 function App() {
   return (
     <>
-      <div className="min-h-screen font-mono text-sky-300/50 bg-sky-950">
-        <div className="text-4xl">Yubi</div>
+      <div className="flex flex-col items-center min-w-80 font-mono text-sky-300/50">
+        <Header />
         <TypingTest />
       </div>
     </>
