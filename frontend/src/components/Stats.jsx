@@ -1,3 +1,5 @@
+import { Tooltip } from 'react-tooltip';
+
 export default function Stats({
   tracker,
   countTyped,
@@ -31,11 +33,10 @@ export default function Stats({
 
   const wordsTyped = countTyped / 5; // standard to consider a 'word' to be any 5 characters
   const duration = (timeEnd.getTime() - timeStart.getTime()) / 1000 / 60; // ms converted to min
-  const rawWpm = Math.round(wordsTyped / duration);
-  const netWpm = Math.round((wordsTyped - errors - extras - missed) / duration);
-  const percentAccuracy = Math.round(
-    ((countTyped - countErrors - extras - missed) / countTyped) * 100,
-  );
+  const rawWpm = wordsTyped / duration;
+  const netWpm = (wordsTyped - errors - extras - missed) / duration;
+  const percentAccuracy =
+    ((countTyped - countErrors - extras - missed) / countTyped) * 100;
 
   return (
     <>
