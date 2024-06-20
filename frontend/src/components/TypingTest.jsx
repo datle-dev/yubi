@@ -37,6 +37,7 @@ const TypingTest = () => {
   const [status, setStatus] = useState({
     isStarted: false,
     isDone: false,
+    isLoading: false,
   });
 
   const [time, setTime] = useState({
@@ -68,12 +69,22 @@ const TypingTest = () => {
   }
 
   async function handleGetWordList(e) {
+    setStatus({
+      isStarted: false,
+      isDone: false,
+      isLoading: true,
+    });
+
     const listName = e.target.getAttribute('list');
     await fetch(`http://localhost:3000/${listName}`)
       .then((res) => res.json())
       .then((data) => {
         setWordList(data.words);
         setConfig({ ...config, wordList: listName });
+      })
+      .then(() => {
+        setStatus({ ...status, isLoading: false });
+        handleReset();
       })
       .catch((err) => console.log(err));
   }
@@ -420,15 +431,25 @@ const TypingTest = () => {
           </div>
         </section>
         <section className="flex flex-col gap-2 justify-center items-center my-4">
-          {config.isWordMode && (
+          {!status.isStarted && <p className="text-2xl">type to begin test</p>}
+          {config.isWordMode && status.isStarted && !status.isDone && (
             <p className="text-2xl">
               {index.word}/{tracker.length}
             </p>
           )}
-          {config.isTimeMode && <p className="text-2xl">{timer}s</p>}
+          {config.isTimeMode && status.isStarted && !status.isDone && (
+            <p className="text-2xl">{timer}s</p>
+          )}
+          {status.isDone && <p className="text-2xl">test complete</p>}
+          {status.isLoading && (
+            <div className="flex items-center text-4xl min-h-32">
+              <p>Loading...</p>
+            </div>
+          )}
           <div
             ref={ref}
             className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+            style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
             <Cursor
               tracker={tracker}
