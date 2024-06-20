@@ -1,80 +1,23 @@
-export default function ConfigOptions({
-  isTimedTest,
-  isWordsTest,
-  onClickHandleConfig,
-}) {
+import TimeDurationButton from './buttons/TimeDurationButton';
+import WordCountButton from './buttons/WordCountButton';
+
+export default function ConfigOptions({ isTimeMode, isWordMode, onClick }) {
   return (
     <>
       {isWordsTest && (
         <div>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            words="10"
-            onClick={onClickHandleConfig}
-          >
-            10
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            words="25"
-            onClick={onClickHandleConfig}
-          >
-            25
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            words="50"
-            onClick={onClickHandleConfig}
-          >
-            50
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            words="100"
-            onClick={onClickHandleConfig}
-          >
-            100
-          </button>
+          <WordCountButton text={'10'} count={'10'} onClick={onClick} />
+          <WordCountButton text={'25'} count={'25'} onClick={onClick} />
+          <WordCountButton text={'50'} count={'50'} onClick={onClick} />
+          <WordCountButton text={'100'} count={'100'} onClick={onClick} />
         </div>
       )}
       {isTimedTest && (
         <div>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            duration="15"
-            onClick={onClickHandleConfig}
-          >
-            15
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            duration="30"
-            onClick={onClickHandleConfig}
-          >
-            30
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            duration="60"
-            onClick={onClickHandleConfig}
-          >
-            60
-          </button>
-          <button
-            type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            duration="120"
-            onClick={onClickHandleConfig}
-          >
-            120
-          </button>
+          <TimeDurationButton text={'15'} duration={'15'} onClick={onClick} />
+          <TimeDurationButton text={'30'} duration={'30'} onClick={onClick} />
+          <TimeDurationButton text={'60'} duration={'60'} onClick={onClick} />
+          <TimeDurationButton text={'120'} duration={'120'} onClick={onClick} />
         </div>
       )}
     </>
