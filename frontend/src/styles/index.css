@@ -10,3 +10,10 @@
     src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff2');
   }
 }
+
+html,
+body,
+#root {
+  min-height: 100vh;
+  margin: 0;
+}
