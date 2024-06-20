@@ -450,6 +450,7 @@ const TypingTest = () => {
               countErrors={count.errors}
               timeStart={time.start}
               timeEnd={time.end}
+              isTimeMode={config.isTimeMode}
             />
           </section>
         )}
