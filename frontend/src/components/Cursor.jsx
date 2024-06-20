@@ -1,18 +1,18 @@
 export default function Cursor({
-  wordsObject,
-  wordIndex,
-  letterIndex,
+  tracker,
+  indexWord,
+  indexLetter,
   wordRowMap,
   rowOffsets,
 }) {
   let prevWordsCharCount = 0;
-  let spacesCount = wordIndex;
-  const rowMultiplier = wordRowMap[wordIndex] === 0 ? 0 : 1;
+  let spacesCount = indexWord;
+  const rowMultiplier = wordRowMap[indexWord] === 0 ? 0 : 1;
 
-  for (let i = 0; i < wordIndex; i++) {
+  for (let i = 0; i < indexWord; i++) {
     prevWordsCharCount += Math.max(
-      wordsObject[i].word.length,
-      wordsObject[i].typed.length,
+      tracker[i].expected.length,
+      tracker[i].typed.length,
     );
   }
 
@@ -21,10 +21,10 @@ export default function Cursor({
   const style = {
     top: `calc(32px * ${rowMultiplier})`,
     left: `calc(-2px
-      + (14.4px * ${letterIndex})
+      + (14.4px * ${indexLetter})
       + (14.4px * ${prevWordsCharCount})
       + (14.4px * ${spacesCount})
-      - ${rowOffsets[wordRowMap[wordIndex]]}px)`,
+      - ${rowOffsets[wordRowMap[indexWord]]}px)`,
   };
 
   return (

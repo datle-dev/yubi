@@ -1,16 +1,16 @@
 export default function Stats({
-  wordsObject,
-  typedCharacters,
-  typedErrors,
-  startTime,
-  endTime,
+  tracker,
+  countTyped,
+  countErrors,
+  timeStart,
+  timeEnd,
 }) {
   let errors = 0;
   let extras = 0;
   let missed = 0;
 
-  for (const entry of wordsObject) {
-    const word = entry.word;
+  for (const entry of tracker) {
+    const word = entry.expected;
     const typed = entry.typed;
 
     const maxLength = Math.max(word.length, typed.length);
@@ -26,12 +26,12 @@ export default function Stats({
     }
   }
 
-  const wordsTyped = typedCharacters / 5; // standard to consider a 'word' to be any 5 characters
-  const duration = (endTime.getTime() - startTime.getTime()) / 1000 / 60; // ms converted to min
+  const wordsTyped = countTyped / 5; // standard to consider a 'word' to be any 5 characters
+  const duration = (timeEnd.getTime() - timeStart.getTime()) / 1000 / 60; // ms converted to min
   const rawWpm = Math.round(wordsTyped / duration);
   const netWpm = Math.round((wordsTyped - errors - extras - missed) / duration);
   const percentAccuracy = Math.round(
-    ((typedCharacters - typedErrors - extras - missed) / typedCharacters) * 100,
+    ((countTyped - countErrors - extras - missed) / countTyped) * 100,
   );
 
   return (
@@ -39,7 +39,7 @@ export default function Stats({
       <div>
         <p>Test completed!</p>
         <p>
-          {typedCharacters}/{errors}/{extras}/{missed}
+          {countTyped}/{errors}/{extras}/{missed}
         </p>
         <p>raw wpm: {rawWpm}</p>
         {netWpm > 0 && <p>net wpm: {netWpm}</p>}

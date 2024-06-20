@@ -4,18 +4,18 @@ import Stats from './Stats.jsx';
 import Cursor from './Cursor.jsx';
 import Counter from './Counter.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
-import ModeButton from './ModeButton.jsx';
-import WordListButton from './WordListButton.jsx';
+import ModeButton from './buttons/ModeButton.jsx';
+import WordListButton from './buttons/WordListButton.jsx';
 
 const TypingTest = () => {
   const [config, setConfig] = useState({
-    isTimedTest: true,
-    timedTestDuration: 10, // seconds
-    isWordsTest: false,
-    wordsTestTarget: 25,
+    isTimeMode: true,
+    timeModeDuration: 15, // seconds
+    isWordMode: false,
+    wordModeCount: 25,
   });
 
-  const [words, setWords] = useState([
+  const [wordList, setWordList] = useState([
     'the',
     'quick',
     'brown',
@@ -27,18 +27,28 @@ const TypingTest = () => {
     'dog',
   ]);
 
-  const [wordIndex, setWordIndex] = useState(0);
-  const [letterIndex, setLetterIndex] = useState(0);
-  const [typedIndex, setTypedIndex] = useState(0);
-  const [isTestDone, setIsTestDone] = useState(false);
-  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [index, setIndex] = useState({
+    word: 0,
+    letter: 0,
+    typed: 0,
+  });
+
+  const [status, setStatus] = useState({
+    isStarted: false,
+    isDone: false,
+  });
+
   const [time, setTime] = useState({
     start: null,
     end: null,
   });
-  const [countdown, setCountdown] = useState(config.timedTestDuration);
-  const [typedCharacters, setTypedCharacters] = useState(0);
-  const [typedErrors, setTypedErrors] = useState(0);
+
+  const [timer, setTimer] = useState(config.timeModeDuration);
+
+  const [count, setCount] = useState({
+    typed: 0,
+    errors: 0,
+  });
 
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
@@ -61,128 +71,137 @@ const TypingTest = () => {
     await fetch(`http://localhost:3000/${listName}`)
       .then((res) => res.json())
       .then((data) => {
-        setWords(data.words);
+        setWordList(data.words);
       })
       .catch((err) => console.log(err));
   }
 
   function mapWords(words) {
     const wordArray = words.map((word) => ({
-      word: word,
+      expected: word,
       typed: '',
     }));
     return wordArray;
   }
 
-  const [wordsObject, setWordsObject] = useState(() => {
-    if (config.isTimedTest) {
-      return mapWords(getRandomWords(words, 500));
-    } else if (config.isWordsTest) {
-      return mapWords(getRandomWords(words, config.wordsTestTarget));
+  const [tracker, setTracker] = useState(() => {
+    if (config.isTimeMode) {
+      return mapWords(getRandomWords(wordList, 25));
+    } else if (config.isWordMode) {
+      return mapWords(getRandomWords(wordList, config.wordModeCount));
     }
   });
 
   useEffect(() => {
-    if (config.isTimedTest) {
-      setWordsObject(mapWords(getRandomWords(words, 500)));
-    } else if (config.isWordsTest) {
-      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    if (config.isTimeMode) {
+      setTracker(mapWords(getRandomWords(wordList, 25)));
+    } else if (config.isWordMode) {
+      setTracker(mapWords(getRandomWords(wordList, config.wordModeCount)));
     }
-  }, [words, config]);
+  }, [wordList, config]);
 
   useEffect(() => {
     function handleKeydown(e) {
-      const currentWord = wordsObject[wordIndex].word;
-      const nextLetter = wordsObject[wordIndex].word.charAt(letterIndex);
+      const currentWord = tracker[index.word].expected;
+      const expectedLetter = tracker[index.word].expected.charAt(index.letter);
+      const alphaLower = 'abcdefghijklmnopqrstuvwxyz';
 
-      if (!isTestStarted) {
-        setIsTestStarted(true);
+      // updates to tracker, index, and count states depend on the condition
+      // below, so instantiate only once here, then edit and update state
+      // if needed
+      let trackerNew = [...tracker];
+      let indexNew = { ...index };
+      let countNew = { ...count };
+
+      if (!status.isStarted) {
+        setStatus({ ...status, isStarted: true });
         setTime({ ...time, start: new Date() });
       }
 
-      // if user at start of word and types space, do nothing
-      if (typedIndex === 0 && e.key === ' ') {
+      // if user types space at start of word, do nothing
+      if (e.key === ' ' && index.typed === 0) {
         return;
       }
 
-      // if user not at start of word and types space, go to next word
-      if (typedIndex > 0 && e.key === ' ') {
-        let newWordIndex = wordIndex + 1;
+      // if user types space anywhere else, go to next word
+      if (e.key === ' ' && index.typed > 0) {
+        let indexNextWord = index.word + 1;
 
         // if already on last word, end typing test
-        if (newWordIndex >= wordsObject.length && config.isWordsTest) {
-          setIsTestDone(true);
+        if (indexNextWord >= tracker.length && config.isWordMode) {
+          setStatus({ ...status, isDone: true });
           setTime({ ...time, end: new Date() });
           return;
         }
 
-        setWordIndex(newWordIndex);
-        setLetterIndex(0);
-        setTypedIndex(0);
-        setTypedCharacters(typedCharacters + 1);
+        setIndex({
+          word: indexNextWord,
+          letter: 0,
+          typed: 0,
+        });
+
+        setCount({ ...count, typed: count.typed + 1 });
 
         return;
       }
 
       // if user types backspace, remove previously typed character
       if (e.key === 'Backspace') {
-        let newWordsObject = [...wordsObject];
-        newWordsObject[wordIndex].typed = newWordsObject[wordIndex].typed.slice(
+        trackerNew[index.word].typed = trackerNew[index.word].typed.slice(
           0,
           -1,
         );
 
-        setWordsObject(newWordsObject);
-
-        if (letterIndex > 0) {
-          let newLetterIndex = letterIndex - 1;
-          if (typedIndex <= letterIndex) {
-            setLetterIndex(newLetterIndex);
-          }
-          setTypedIndex(typedIndex - 1);
+        if (index.letter > 0) {
+          indexNew.typed -= 1;
+          indexNew.letter -= 1;
         }
+
+        setIndex(indexNew);
+        setTracker(trackerNew);
 
         return;
       }
 
       // handle all other user keypresses
-      if (e.key === nextLetter) {
-        let newWordsObject = [...wordsObject];
-        let newLetterIndex = letterIndex + 1;
-        let newTypedIndex = typedIndex + 1;
+      if (e.key === expectedLetter) {
+        indexNew.letter += 1;
+        indexNew.typed += 1;
 
-        newWordsObject[wordIndex].typed += e.key;
+        trackerNew[index.word].typed += e.key;
 
-        setWordsObject(newWordsObject);
-        setTypedIndex(newTypedIndex);
-        setTypedCharacters(typedCharacters + 1);
+        setTracker(trackerNew);
+        setIndex(indexNew);
+        setCount({ ...count, typed: count.typed + 1 });
 
         // if user on last word and typed word matches, end typing test
         if (
-          wordIndex === wordsObject.length - 1 &&
-          newWordsObject[wordIndex].typed === currentWord &&
-          config.isWordsTest
+          index.word === tracker.length - 1 &&
+          trackerNew[index.word].typed === currentWord &&
+          config.isWordMode
         ) {
-          setIsTestDone(true);
+          setStatus({ ...status, isDone: true });
           setTime({ ...time, end: new Date() });
           return;
         }
 
         // if word not finished, set letter and its index
-        if (newLetterIndex <= currentWord.length) {
-          setLetterIndex(newLetterIndex);
+        if (indexNew.letter <= currentWord.length) {
+          setIndex(indexNew);
           return;
         }
-      } else if ('abcdefghijklmnopqrstuvwxyz'.includes(e.key)) {
-        // even if keypress was wrong, capture what user typed
-        let newWordsObject = [...wordsObject];
-        let newLetterIndex = letterIndex + 1;
-        newWordsObject[wordIndex].typed += e.key;
 
-        setWordsObject(newWordsObject);
-        setLetterIndex(newLetterIndex);
-        setTypedIndex(typedIndex + 1);
-        setTypedErrors(typedErrors + 1);
+        // even if keypress was wrong, capture what user typed
+      } else if (alphaLower.includes(e.key)) {
+        indexNew.letter += 1;
+        indexNew.typed += 1;
+        trackerNew[index.word].typed += e.key;
+        countNew.expected += 1;
+        countNew.errors += 1;
+
+        setTracker(trackerNew);
+        setIndex(indexNew);
+        setCount(countNew);
       }
       return;
     }
@@ -192,84 +211,121 @@ const TypingTest = () => {
     return () => {
       window.removeEventListener('keydown', handleKeydown);
     };
-  }, [wordsObject, wordIndex, letterIndex, typedIndex, isTestDone]);
+  }, [config, index, status, time, count, tracker]);
 
   useEffect(() => {
     setWidth(ref.current.offsetWidth);
 
-    const getwidth = () => {
+    const getWidth = () => {
       setWidth(ref.current.offsetWidth);
     };
 
-    window.addEventListener('resize', getwidth);
+    window.addEventListener('resize', getWidth);
 
-    return () => window.removeEventListener('resize', getwidth);
+    return () => window.removeEventListener('resize', getWidth);
   }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCountdown(() => {
-        if (config.isTimedTest && isTestStarted && !isTestDone)
-          return countdown - 1;
-        return countdown;
+      setTimer(() => {
+        if (config.isTimeMode && status.isStarted && !status.isDone)
+          return timer - 1;
+        return timer;
       });
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [config.isTimedTest, countdown, isTestStarted, isTestDone]);
+  }, [config, status, timer]);
 
   useEffect(() => {
-    if (countdown === 0 && !isTestDone) {
+    if (timer === 0 && !status.isDone) {
       setTime({ ...time, end: new Date() });
-      setIsTestDone(true);
+      setStatus({ ...status, isDone: true });
     }
-  }, [countdown, setTime, time, setIsTestDone, isTestDone]);
+  }, [time, timer, status]);
 
   function handleTestMode(e) {
-    console.log(e.target.getAttribute('mode'));
     const testMode = e.target.getAttribute('mode');
     if (testMode === 'time') {
-      setConfig({ ...config, isTimedTest: true, isWordsTest: false });
+      setConfig({ ...config, isTimeMode: true, isWordMode: false });
     } else if (testMode === 'word') {
-      setConfig({ ...config, isTimedTest: false, isWordsTest: true });
+      setConfig({ ...config, isTimeMode: false, isWordMode: true });
     }
   }
 
   function handleConfigOptions(e) {
-    if (config.isTimedTest) {
+    if (config.isTimeMode) {
+      const duration = Number(e.target.getAttribute('duration'));
+
       setConfig({
         ...config,
-        timedTestDuration: e.target.getAttribute('duration'),
+        timeModeDuration: duration,
       });
-      setCountdown(Number(e.target.getAttribute('duration')));
-      resetTest();
-    }
-    if (config.isWordsTest) {
-      setConfig({ ...config, wordsTestTarget: e.target.getAttribute('words') });
-      setWordsObject(
-        mapWords(getRandomWords(words, e.target.getAttribute('words'))),
-      );
-      resetTest();
+
+      resetTimeMode(duration);
+    } else if (config.isWordMode) {
+      const num = Number(e.target.getAttribute('count'));
+
+      setConfig({
+        ...config,
+        wordModeCount: num,
+      });
+
+      resetWordMode(num);
     }
   }
 
-  function resetTest() {
-    setWordIndex(0);
-    setLetterIndex(0);
-    setTypedIndex(0);
-    setIsTestDone(false);
-    setIsTestStarted(false);
+  function resetTimeMode(duration) {
+    setIndex({
+      word: 0,
+      letter: 0,
+      typed: 0,
+    });
+    setStatus({
+      isStarted: false,
+      isDone: false,
+    });
     setTime({
       start: null,
       end: null,
     });
-    setCountdown(config.timedTestDuration);
-    setTypedCharacters(0);
-    setTypedErrors(0);
-    if (config.isTimedTest) {
-      setWordsObject(mapWords(getRandomWords(words, 500)));
-    } else if (config.isWordsTest) {
-      setWordsObject(mapWords(getRandomWords(words, config.wordsTestTarget)));
+    setTimer(duration);
+    setCount({
+      typed: 0,
+      errors: 0,
+    });
+    setTracker(mapWords(getRandomWords(wordList, 25)));
+  }
+
+  function resetWordMode(num) {
+    setIndex({
+      word: 0,
+      letter: 0,
+      typed: 0,
+    });
+    setStatus({
+      isStarted: false,
+      isDone: false,
+    });
+    setTime({
+      start: null,
+      end: null,
+    });
+    setTimer(config.timeModeDuration);
+    setCount({
+      typed: 0,
+      errors: 0,
+    });
+    setTracker(mapWords(getRandomWords(wordList, num)));
+  }
+
+  // handler function to pass as callback to the reset button
+  // which only passes config values as parameters
+  function handleReset() {
+    if (config.isTimeMode) {
+      resetTimeMode(config.timeModeDuration);
+    } else if (config.isWordMode) {
+      resetWordMode(config.wordModeCount);
     }
   }
 
@@ -282,10 +338,10 @@ const TypingTest = () => {
     let rowOffsetsTemp = { 0: 0 };
     let wordRowMapTemp = {};
 
-    for (let i = 0; i < wordsObject.length; i++) {
+    for (let i = 0; i < tracker.length; i++) {
       const wordLength = Math.max(
-        wordsObject[i].word.length,
-        wordsObject[i].typed.length,
+        tracker[i].expected.length,
+        tracker[i].typed.length,
       );
       const wordSpacing = (wordLength + 1) * 14.4; // 14.4px per character + one space
       sumWidth += wordSpacing;
@@ -301,7 +357,7 @@ const TypingTest = () => {
 
     setRowOffsets(rowOffsetsTemp);
     setWordRowMap(wordRowMapTemp);
-  }, [width, wordsObject]);
+  }, [width, tracker]);
 
   return (
     <>
@@ -310,7 +366,7 @@ const TypingTest = () => {
           <button
             type="button"
             className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
-            onClick={resetTest}
+            onClick={handleReset}
           >
             reset
           </button>
@@ -320,9 +376,9 @@ const TypingTest = () => {
           <ModeButton text={'word'} mode={'word'} onClick={handleTestMode} />
         </div>
         <ConfigOptions
-          isTimedTest={config.isTimedTest}
-          isWordsTest={config.isWordsTest}
-          onClickHandleConfig={handleConfigOptions}
+          isTimeMode={config.isTimeMode}
+          isWordMode={config.isWordMode}
+          onClick={handleConfigOptions}
         />
         <div>
           <WordListButton
@@ -337,59 +393,58 @@ const TypingTest = () => {
           />
         </div>
         <h2>Typing Area</h2>
-        <Counter current={wordIndex} total={wordsObject.length} />
+        <Counter current={index.word} total={tracker.length} />
         <div
           ref={ref}
           className="relative flex justify-start flex-wrap max-w-prose border"
         >
           <Cursor
-            wordsObject={wordsObject}
-            wordIndex={wordIndex}
-            letterIndex={letterIndex}
+            tracker={tracker}
+            indexWord={index.word}
+            indexLetter={index.letter}
             wordRowMap={wordRowMap}
             rowOffsets={rowOffsets}
           />
-          {wordsObject.map((wordObject, index) => {
+          {tracker.map((entry, ind) => {
             return (
               <Word
-                key={index}
-                word={wordObject.word}
-                typed={wordObject.typed}
-                index={index}
-                wordIndex={wordIndex}
+                key={ind}
+                expected={entry.expected}
+                typed={entry.typed}
+                index={ind}
+                indexWord={index.word}
                 wordRowMap={wordRowMap}
               />
             );
           })}
         </div>
-        {isTestDone && <h2>Test done!</h2>}
-        {isTestDone && (
+        {status.isDone && <h2>Test done!</h2>}
+        {status.isDone && (
           <Stats
-            wordsObject={wordsObject}
-            typedCharacters={typedCharacters}
-            typedErrors={typedErrors}
-            startTime={time.start}
-            endTime={time.end}
+            tracker={tracker}
+            countTyped={count.typed}
+            countErrors={count.errors}
+            timeStart={time.start}
+            timeEnd={time.end}
           />
         )}
       </div>
       <h2>Debug Info</h2>
       <div>
         <p>config: {JSON.stringify(config)}</p>
-        <p>words length: {words.length}</p>
-        <p>word index: {wordIndex}</p>
-        {/* <p>words object: {JSON.stringify(wordsObject)}</p> */}
-        <p>letter index: {letterIndex}</p>
-        <p>typed: {wordsObject[wordIndex].typed}</p>
-        <p>typed index: {typedIndex}</p>
-        {/* <p>current word: {words[wordIndex]}</p>
-        <p>next letter: {words[wordIndex].charAt(letterIndex)}</p> */}
-        <p>test done? {String(isTestDone)}</p>
+        <p>wordList length: {wordList.length}</p>
+        <p>tracker: {JSON.stringify(tracker)}</p>
+        <p>index.word: {index.word}</p>
+        <p>index.letter: {index.letter}</p>
+        <p>index.typed: {index.typed}</p>
+        <p>test done? {String(status.isDone)}</p>
         <p>start time: {JSON.stringify(time)} </p>
-        <p>typed chars: {typedCharacters}</p>
-        <p>typed errors: {typedErrors}</p>
+        <p>typed count: {count.typed}</p>
+        <p>error count: {count.errors}</p>
         <p>width: {width}</p>
-        <p>countdown: {countdown} s</p>
+        <p>timer: {timer} s</p>
+        <p>rowOffsets: {JSON.stringify(rowOffsets)}</p>
+        <p>wordRowMap: {JSON.stringify(wordRowMap)}</p>
       </div>
     </>
   );

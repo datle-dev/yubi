@@ -1,11 +1,17 @@
 import Letter from './Letter';
 
-export default function Word({ word, typed, index, wordIndex, wordRowMap }) {
-  const maxLength = Math.max(word.length, typed.length);
+export default function Word({
+  expected,
+  typed,
+  index,
+  indexWord,
+  wordRowMap,
+}) {
+  const maxLength = Math.max(expected.length, typed.length);
 
   const renderLetters = () => {
     const wordRow = wordRowMap[index];
-    const currentRow = wordRowMap[wordIndex];
+    const currentRow = wordRowMap[indexWord];
 
     if (currentRow === 0) {
       if (wordRow > currentRow + 2) {
@@ -20,21 +26,21 @@ export default function Word({ word, typed, index, wordIndex, wordRowMap }) {
     let letterArray = [];
 
     for (let i = 0; i < maxLength; i++) {
-      if (word.charAt(i) === '') {
+      if (expected.charAt(i) === '') {
         letterArray.push(
           <Letter key={i} letter={typed.charAt(i)} letterType={'extra'} />,
         );
       } else if (typed.charAt(i) === '') {
         letterArray.push(
-          <Letter key={i} letter={word.charAt(i)} letterType={'normal'} />,
+          <Letter key={i} letter={expected.charAt(i)} letterType={'normal'} />,
         );
-      } else if (word.charAt(i) === typed.charAt(i)) {
+      } else if (expected.charAt(i) === typed.charAt(i)) {
         letterArray.push(
           <Letter key={i} letter={typed.charAt(i)} letterType={'correct'} />,
         );
       } else {
         letterArray.push(
-          <Letter key={i} letter={word.charAt(i)} letterType={'wrong'} />,
+          <Letter key={i} letter={expected.charAt(i)} letterType={'wrong'} />,
         );
       }
     }
