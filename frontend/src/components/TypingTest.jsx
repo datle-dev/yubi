@@ -474,6 +474,7 @@ const TypingTest = () => {
                 indexLetter={index.letter}
                 wordRowMap={wordRowMap}
                 rowOffsets={rowOffsets}
+                isStarted={status.isStarted}
               />
             )}
             {tracker.map((entry, ind) => {
