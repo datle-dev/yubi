@@ -71,13 +71,16 @@ const TypingTest = () => {
   }
 
   async function handleGetWordList(e) {
+    const listName = e.target.getAttribute('list');
+
+    if (config.wordList === listName) return;
+
     setStatus({
       isStarted: false,
       isDone: false,
       isLoading: true,
     });
 
-    const listName = e.target.getAttribute('list');
     await fetch(`http://localhost:3000/${listName}`)
       .then((res) => res.json())
       .then((data) => {
@@ -270,9 +273,12 @@ const TypingTest = () => {
 
   function handleTestMode(e) {
     const testMode = e.target.getAttribute('mode');
+
     if (testMode === 'time') {
+      if (config.isTimeMode) return;
       setConfig({ ...config, isTimeMode: true, isWordMode: false });
     } else if (testMode === 'word') {
+      if (config.isWordMode) return;
       setConfig({ ...config, isTimeMode: false, isWordMode: true });
     }
     setTypingWindowKey(Math.random());
@@ -282,6 +288,8 @@ const TypingTest = () => {
     if (config.isTimeMode) {
       const duration = Number(e.target.getAttribute('duration'));
 
+      if (config.timeModeDuration === duration) return;
+
       setConfig({
         ...config,
         timeModeDuration: duration,
@@ -290,6 +298,8 @@ const TypingTest = () => {
       resetTimeMode(duration);
     } else if (config.isWordMode) {
       const num = Number(e.target.getAttribute('count'));
+
+      if (config.wordModeCount === num) return;
 
       setConfig({
         ...config,
