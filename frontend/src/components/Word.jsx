@@ -51,7 +51,7 @@ export default function Word({
   return (
     <>
       {renderLetters() !== null && (
-        <div className="text-2xl font-mono mr-[14.4px]">{renderLetters()}</div>
+        <div className="text-3xl mr-[18px]">{renderLetters()}</div>
       )}
     </>
   );

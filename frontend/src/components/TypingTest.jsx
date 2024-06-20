@@ -343,7 +343,7 @@ const TypingTest = () => {
         tracker[i].expected.length,
         tracker[i].typed.length,
       );
-      const wordSpacing = (wordLength + 1) * 14.4; // 14.4px per character + one space
+      const wordSpacing = (wordLength + 1) * 18; // 18px per character + one space
       sumWidth += wordSpacing;
 
       if (sumWidth > width) {
@@ -392,11 +392,13 @@ const TypingTest = () => {
             onClick={handleGetWordList}
           />
         </div>
-        <h2>Typing Area</h2>
-        <Counter current={index.word} total={tracker.length} />
+        {config.isWordMode && (
+          <Counter current={index.word} total={tracker.length} />
+        )}
+        {config.isTimeMode && <p>{timer}s</p>}
         <div
           ref={ref}
-          className="relative flex justify-start flex-wrap max-w-prose border"
+          className="relative flex justify-start flex-wrap max-w-3xl"
         >
           <Cursor
             tracker={tracker}
@@ -418,7 +420,6 @@ const TypingTest = () => {
             );
           })}
         </div>
-        {status.isDone && <h2>Test done!</h2>}
         {status.isDone && (
           <Stats
             tracker={tracker}
@@ -428,23 +429,6 @@ const TypingTest = () => {
             timeEnd={time.end}
           />
         )}
-      </div>
-      <h2>Debug Info</h2>
-      <div>
-        <p>config: {JSON.stringify(config)}</p>
-        <p>wordList length: {wordList.length}</p>
-        <p>tracker: {JSON.stringify(tracker)}</p>
-        <p>index.word: {index.word}</p>
-        <p>index.letter: {index.letter}</p>
-        <p>index.typed: {index.typed}</p>
-        <p>test done? {String(status.isDone)}</p>
-        <p>start time: {JSON.stringify(time)} </p>
-        <p>typed count: {count.typed}</p>
-        <p>error count: {count.errors}</p>
-        <p>width: {width}</p>
-        <p>timer: {timer} s</p>
-        <p>rowOffsets: {JSON.stringify(rowOffsets)}</p>
-        <p>wordRowMap: {JSON.stringify(wordRowMap)}</p>
       </div>
     </>
   );
