@@ -7,13 +7,23 @@ import ModeButton from './buttons/ModeButton.jsx';
 import WordListButton from './buttons/WordListButton.jsx';
 
 const TypingTest = () => {
-  const [config, setConfig] = useState({
-    isTimeMode: true,
-    timeModeDuration: 15, // seconds
-    isWordMode: false,
-    wordModeCount: 25,
-    wordList: 'default',
+  const [config, setConfig] = useState(() => {
+    if (window.localStorage.getItem('yubi') === null) {
+      return {
+        isTimeMode: true,
+        timeModeDuration: 15, // seconds
+        isWordMode: false,
+        wordModeCount: 25,
+        wordList: 'default',
+      };
+    } else {
+      return JSON.parse(window.localStorage.getItem('yubi'));
+    }
   });
+
+  useEffect(() => {
+    window.localStorage.setItem('yubi', JSON.stringify(config));
+  }, [config]);
 
   const [wordList, setWordList] = useState([
     'the',
