@@ -40,7 +40,7 @@ export default function Stats({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-x-6">
+      <div className="grid grid-cols-2 text-2xl gap-x-6">
         <p className="text-sky-300/50">characters:</p>
         <p className="text-sky-200">
           {countTyped}/{errors}/{extras}/{missed}
