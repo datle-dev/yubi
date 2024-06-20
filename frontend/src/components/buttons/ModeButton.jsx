@@ -2,7 +2,7 @@ export default function ModeButton({ text, mode, onClick }) {
   return (
     <button
       type="button"
-      className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+      className="bg-sky-950 text-sky-300/50 hover:text-sky-200 p-2"
       mode={mode}
       onClick={onClick}
     >

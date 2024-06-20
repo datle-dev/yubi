@@ -2,7 +2,7 @@ export default function TimeDurationButton({ text, duration, onClick }) {
   return (
     <button
       type="button"
-      className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+      className="bg-sky-950 text-sky-300/50 hover:text-sky-200 p-2"
       duration={duration}
       onClick={onClick}
     >
