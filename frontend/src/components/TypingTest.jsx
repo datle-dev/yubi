@@ -88,7 +88,7 @@ const TypingTest = () => {
 
   const [tracker, setTracker] = useState(() => {
     if (config.isTimeMode) {
-      return mapWords(getRandomWords(wordList, 25));
+      return mapWords(getRandomWords(wordList, 500));
     } else if (config.isWordMode) {
       return mapWords(getRandomWords(wordList, config.wordModeCount));
     }
@@ -96,7 +96,7 @@ const TypingTest = () => {
 
   useEffect(() => {
     if (config.isTimeMode) {
-      setTracker(mapWords(getRandomWords(wordList, 25)));
+      setTracker(mapWords(getRandomWords(wordList, 500)));
     } else if (config.isWordMode) {
       setTracker(mapWords(getRandomWords(wordList, config.wordModeCount)));
     }
@@ -104,6 +104,13 @@ const TypingTest = () => {
 
   useEffect(() => {
     function handleKeydown(e) {
+      if (status.isDone) {
+        if (e.key === 'Enter') {
+          handleReset();
+        }
+        return;
+      }
+
       const currentWord = tracker[index.word].expected;
       const expectedLetter = tracker[index.word].expected.charAt(index.letter);
       const alphaLower = 'abcdefghijklmnopqrstuvwxyz';
@@ -296,7 +303,7 @@ const TypingTest = () => {
       typed: 0,
       errors: 0,
     });
-    setTracker(mapWords(getRandomWords(wordList, 25)));
+    setTracker(mapWords(getRandomWords(wordList, 500)));
   }
 
   function resetWordMode(num) {
@@ -450,6 +457,7 @@ const TypingTest = () => {
               countErrors={count.errors}
               timeStart={time.start}
               timeEnd={time.end}
+              isTimeMode={config.isTimeMode}
             />
           </section>
         )}
