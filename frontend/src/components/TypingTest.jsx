@@ -104,6 +104,13 @@ const TypingTest = () => {
 
   useEffect(() => {
     function handleKeydown(e) {
+      if (status.isDone) {
+        if (e.key === 'Enter') {
+          handleReset();
+        }
+        return;
+      }
+
       const currentWord = tracker[index.word].expected;
       const expectedLetter = tracker[index.word].expected.charAt(index.letter);
       const alphaLower = 'abcdefghijklmnopqrstuvwxyz';
