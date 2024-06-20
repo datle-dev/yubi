@@ -36,15 +36,24 @@ export default function Stats({
 
   return (
     <>
-      <div>
-        <p>Test completed!</p>
-        <p>
+      <div className="grid grid-cols-2 gap-x-6">
+        <p className="text-sky-300/50">characters:</p>
+        <p className="text-sky-200">
           {countTyped}/{errors}/{extras}/{missed}
         </p>
-        <p>raw wpm: {rawWpm}</p>
-        {netWpm > 0 && <p>net wpm: {netWpm}</p>}
-        {netWpm <= 0 && <p>net wpm: Invalid</p>}
-        <p>accuracy: {percentAccuracy}%</p>
+
+        <p className="text-sky-300/50">raw wpm:</p>
+        <p className="text-sky-200"> {rawWpm}</p>
+
+        <p className="text-sky-300/50">net wpm:</p>
+        {netWpm > 0 && <p className="text-sky-200">{netWpm}</p>}
+        {netWpm <= 0 && <p className="text-sky-200">invalid</p>}
+
+        <p className="text-sky-300/50">accuracy:</p>
+        <p className="text-sky-200">{percentAccuracy}%</p>
+
+        <p className="text-sky-300/50">duration:</p>
+        <p className="text-sky-200">{Math.round(duration * 60)}s</p>
       </div>
     </>
   );

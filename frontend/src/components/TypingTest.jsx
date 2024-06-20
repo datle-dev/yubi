@@ -13,6 +13,7 @@ const TypingTest = () => {
     timeModeDuration: 15, // seconds
     isWordMode: false,
     wordModeCount: 25,
+    wordList: 'default',
   });
 
   const [wordList, setWordList] = useState([
@@ -72,6 +73,7 @@ const TypingTest = () => {
       .then((res) => res.json())
       .then((data) => {
         setWordList(data.words);
+        setConfig({ ...config, wordList: listName });
       })
       .catch((err) => console.log(err));
   }
@@ -343,7 +345,7 @@ const TypingTest = () => {
         tracker[i].expected.length,
         tracker[i].typed.length,
       );
-      const wordSpacing = (wordLength + 1) * 14.4; // 14.4px per character + one space
+      const wordSpacing = (wordLength + 1) * 18; // 18px per character + one space
       sumWidth += wordSpacing;
 
       if (sumWidth > width) {
@@ -361,90 +363,96 @@ const TypingTest = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <div>
+      <div className="flex flex-col justify-center items-center px-4">
+        <section className="flex flex-col gap-2 my-4">
           <button
             type="button"
-            className="border rounded bg-blue-500 hover:bg-blue-700 text-white p-2"
+            className="bg-sky-950 text-sky-300/50 hover:text-sky-200 p-2"
             onClick={handleReset}
           >
             reset
           </button>
-        </div>
-        <div>
-          <ModeButton text={'time'} mode={'time'} onClick={handleTestMode} />
-          <ModeButton text={'word'} mode={'word'} onClick={handleTestMode} />
-        </div>
-        <ConfigOptions
-          isTimeMode={config.isTimeMode}
-          isWordMode={config.isWordMode}
-          onClick={handleConfigOptions}
-        />
-        <div>
-          <WordListButton
-            text={'english-100'}
-            list={'english-100'}
-            onClick={handleGetWordList}
-          />
-          <WordListButton
-            text={'hololive-en'}
-            list={'hololive-en'}
-            onClick={handleGetWordList}
-          />
-        </div>
-        <h2>Typing Area</h2>
-        <Counter current={index.word} total={tracker.length} />
-        <div
-          ref={ref}
-          className="relative flex justify-start flex-wrap max-w-prose border"
-        >
-          <Cursor
-            tracker={tracker}
-            indexWord={index.word}
-            indexLetter={index.letter}
-            wordRowMap={wordRowMap}
-            rowOffsets={rowOffsets}
-          />
-          {tracker.map((entry, ind) => {
-            return (
-              <Word
-                key={ind}
-                expected={entry.expected}
-                typed={entry.typed}
-                index={ind}
-                indexWord={index.word}
-                wordRowMap={wordRowMap}
+          <div className="flex justify-between gap-4">
+            <div>
+              <ModeButton
+                text={'time'}
+                mode={'time'}
+                onClick={handleTestMode}
+                isActive={config.isTimeMode}
               />
-            );
-          })}
-        </div>
-        {status.isDone && <h2>Test done!</h2>}
+              <ModeButton
+                text={'word'}
+                mode={'word'}
+                onClick={handleTestMode}
+                isActive={config.isWordMode}
+              />
+            </div>
+            <ConfigOptions
+              isTimeMode={config.isTimeMode}
+              isWordMode={config.isWordMode}
+              timeModeDuration={config.timeModeDuration}
+              wordModeCount={config.wordModeCount}
+              onClick={handleConfigOptions}
+            />
+          </div>
+          <div className="flex justify-center gap-2">
+            <WordListButton
+              text={'english-100'}
+              list={'english-100'}
+              onClick={handleGetWordList}
+              isActive={config.wordList === 'english-100'}
+            />
+            <WordListButton
+              text={'hololive-en'}
+              list={'hololive-en'}
+              onClick={handleGetWordList}
+              isActive={config.wordList === 'hololive-en'}
+            />
+          </div>
+        </section>
+        <section className="flex flex-col gap-2 justify-center items-center my-4">
+          {config.isWordMode && (
+            <p className="text-2xl">
+              {index.word}/{tracker.length}
+            </p>
+          )}
+          {config.isTimeMode && <p className="text-2xl">{timer}s</p>}
+          <div
+            ref={ref}
+            className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+          >
+            <Cursor
+              tracker={tracker}
+              indexWord={index.word}
+              indexLetter={index.letter}
+              wordRowMap={wordRowMap}
+              rowOffsets={rowOffsets}
+            />
+            {tracker.map((entry, ind) => {
+              return (
+                <Word
+                  key={ind}
+                  expected={entry.expected}
+                  typed={entry.typed}
+                  index={ind}
+                  indexWord={index.word}
+                  wordRowMap={wordRowMap}
+                />
+              );
+            })}
+          </div>
+        </section>
         {status.isDone && (
-          <Stats
-            tracker={tracker}
-            countTyped={count.typed}
-            countErrors={count.errors}
-            timeStart={time.start}
-            timeEnd={time.end}
-          />
+          <section>
+            <Stats
+              tracker={tracker}
+              countTyped={count.typed}
+              countErrors={count.errors}
+              timeStart={time.start}
+              timeEnd={time.end}
+            />
+          </section>
         )}
-      </div>
-      <h2>Debug Info</h2>
-      <div>
-        <p>config: {JSON.stringify(config)}</p>
-        <p>wordList length: {wordList.length}</p>
-        <p>tracker: {JSON.stringify(tracker)}</p>
-        <p>index.word: {index.word}</p>
-        <p>index.letter: {index.letter}</p>
-        <p>index.typed: {index.typed}</p>
-        <p>test done? {String(status.isDone)}</p>
-        <p>start time: {JSON.stringify(time)} </p>
-        <p>typed count: {count.typed}</p>
-        <p>error count: {count.errors}</p>
-        <p>width: {width}</p>
-        <p>timer: {timer} s</p>
-        <p>rowOffsets: {JSON.stringify(rowOffsets)}</p>
-        <p>wordRowMap: {JSON.stringify(wordRowMap)}</p>
       </div>
     </>
   );

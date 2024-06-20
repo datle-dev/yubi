@@ -19,17 +19,17 @@ export default function Cursor({
   // need to use style prop and perform CSS calc() operations in template
   // literal, otherwise calc() doesn't resolve
   const style = {
-    top: `calc(32px * ${rowMultiplier})`,
+    top: `calc(40px * ${rowMultiplier})`,
     left: `calc(-2px
-      + (14.4px * ${indexLetter})
-      + (14.4px * ${prevWordsCharCount})
-      + (14.4px * ${spacesCount})
+      + (18px * ${indexLetter})
+      + (18px * ${prevWordsCharCount})
+      + (18px * ${spacesCount})
       - ${rowOffsets[wordRowMap[indexWord]]}px)`,
   };
 
   return (
     <div
-      className="absolute w-1 h-8 rounded animate-blink bg-gray-500"
+      className="absolute w-1 h-8 rounded animate-blink bg-green-300"
       style={style}
     ></div>
   );
