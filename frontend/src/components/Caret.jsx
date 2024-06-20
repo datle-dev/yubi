@@ -17,21 +17,24 @@ export default function Caret({
     );
   }
 
-  // need to use style prop and perform CSS calc() operations in template
-  // literal, otherwise calc() doesn't resolve
+  const offset = rowOffsets[wordRowMap[indexWord]];
   const style = {
-    top: `calc(40px * ${rowMultiplier})`,
-    left: `calc(-2px
+    top: 0,
+    left: 0,
+    transform: `translate(
+      calc(-2px
       + (18px * ${indexLetter})
       + (18px * ${prevWordsCharCount})
-      + (18px * ${spacesCount})
-      - ${rowOffsets[wordRowMap[indexWord]]}px)`,
+      + (18px * ${spacesCount}) - ${offset}px),
+      calc(40px * ${rowMultiplier})
+    )`,
+    transition: 'transform 50ms linear',
   };
 
   return (
     <div
       className={
-        'absolute w-1 h-8 rounded bg-green-300' +
+        'absolute w-1 h-8 rounded bg-yellow-500' +
         (isStarted ? '' : ' animate-blink')
       }
       style={style}
