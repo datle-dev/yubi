@@ -492,16 +492,25 @@ const TypingTest = () => {
           </div>
         </section>
         {status.isDone && (
-          <section>
-            <Stats
-              tracker={tracker}
-              countTyped={count.typed}
-              countErrors={count.errors}
-              timeStart={time.start}
-              timeEnd={time.end}
-              isTimeMode={config.isTimeMode}
-            />
-          </section>
+          <>
+            <p className="flex items-center gap-2 my-4">
+              type
+              <kbd className="rounded text-sky-950 bg-sky-300/50 p-0.5">
+                enter
+              </kbd>
+              to reset
+            </p>
+            <section>
+              <Stats
+                tracker={tracker}
+                countTyped={count.typed}
+                countErrors={count.errors}
+                timeStart={time.start}
+                timeEnd={time.end}
+                isTimeMode={config.isTimeMode}
+              />
+            </section>
+          </>
         )}
       </div>
     </>
