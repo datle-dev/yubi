@@ -467,13 +467,15 @@ const TypingTest = () => {
             className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein"
             style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
-            <Caret
-              tracker={tracker}
-              indexWord={index.word}
-              indexLetter={index.letter}
-              wordRowMap={wordRowMap}
-              rowOffsets={rowOffsets}
-            />
+            {!status.isDone && (
+              <Caret
+                tracker={tracker}
+                indexWord={index.word}
+                indexLetter={index.letter}
+                wordRowMap={wordRowMap}
+                rowOffsets={rowOffsets}
+              />
+            )}
             {tracker.map((entry, ind) => {
               return (
                 <Word
