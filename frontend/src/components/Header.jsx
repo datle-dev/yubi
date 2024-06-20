@@ -9,9 +9,15 @@ export default function Header() {
           <h1 className="text-4xl">Yubi</h1>
         </div>
         <div className="flex gap-4">
-          <a href="#">Link</a>
-          <a href="#">Link</a>
-          <a href="#">Link</a>
+          <a className="hover:text-sky-50" href="#">
+            Link
+          </a>
+          <a className="hover:text-sky-50" href="#">
+            Link
+          </a>
+          <a className="hover:text-sky-50" href="#">
+            Link
+          </a>
         </div>
       </header>
     </>
