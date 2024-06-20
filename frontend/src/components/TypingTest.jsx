@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import Word from './Word';
 import Stats from './Stats.jsx';
 import Caret from './Caret.jsx';
-import Counter from './Counter.jsx';
 import ConfigOptions from './ConfigOptions.jsx';
 import ModeButton from './buttons/ModeButton.jsx';
 import WordListButton from './buttons/WordListButton.jsx';
