@@ -55,6 +55,8 @@ const TypingTest = () => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
 
+  const [typingWindowKey, setTypingWindowKey] = useState(Math.random());
+
   const [wordRowMap, setWordRowMap] = useState({});
 
   function getRandomWords(wordArray, targetNum) {
@@ -273,6 +275,7 @@ const TypingTest = () => {
     } else if (testMode === 'word') {
       setConfig({ ...config, isTimeMode: false, isWordMode: true });
     }
+    setTypingWindowKey(Math.random());
   }
 
   function handleConfigOptions(e) {
@@ -295,6 +298,8 @@ const TypingTest = () => {
 
       resetWordMode(num);
     }
+
+    setTypingWindowKey(Math.random());
   }
 
   function resetTimeMode(duration) {
@@ -349,6 +354,7 @@ const TypingTest = () => {
     } else if (config.isWordMode) {
       resetWordMode(config.wordModeCount);
     }
+    setTypingWindowKey(Math.random());
   }
 
   const [rowOffsets, setRowOffsets] = useState({});
@@ -447,8 +453,9 @@ const TypingTest = () => {
             </div>
           )}
           <div
+            key={typingWindowKey}
             ref={ref}
-            className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+            className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein"
             style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
             <Cursor
