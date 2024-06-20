@@ -306,6 +306,7 @@ const TypingTest = () => {
     setStatus({
       isStarted: false,
       isDone: false,
+      isLoading: true,
     });
     setTime({
       start: null,
@@ -317,6 +318,7 @@ const TypingTest = () => {
       errors: 0,
     });
     setTracker(mapWords(getRandomWords(wordList, 500)));
+    setStatus({ ...status, isLoading: false });
   }
 
   function resetWordMode(num) {
@@ -328,6 +330,7 @@ const TypingTest = () => {
     setStatus({
       isStarted: false,
       isDone: false,
+      isLoading: true,
     });
     setTime({
       start: null,
@@ -339,6 +342,7 @@ const TypingTest = () => {
       errors: 0,
     });
     setTracker(mapWords(getRandomWords(wordList, num)));
+    setStatus({ ...status, isLoading: false });
   }
 
   // handler function to pass as callback to the reset button
@@ -431,24 +435,36 @@ const TypingTest = () => {
           </div>
         </section>
         <section className="flex flex-col gap-2 justify-center items-center my-4">
-          {!status.isStarted && <p className="text-2xl">type to begin test</p>}
-          {config.isWordMode && status.isStarted && !status.isDone && (
-            <p className="text-2xl">
-              {index.word}/{tracker.length}
-            </p>
+          {!status.isStarted && !status.isLoading && (
+            <p className="animate-fadein text-2xl">type to begin test</p>
           )}
-          {config.isTimeMode && status.isStarted && !status.isDone && (
-            <p className="text-2xl">{timer}s</p>
+          {config.isWordMode &&
+            status.isStarted &&
+            !status.isDone &&
+            !status.isLoading && (
+              <p className="animate-fadein text-2xl">
+                {index.word}/{tracker.length}
+              </p>
+            )}
+          {config.isTimeMode &&
+            status.isStarted &&
+            !status.isDone &&
+            !status.isLoading && (
+              <p className="animate-fadein text-2xl">{timer}s</p>
+            )}
+          {status.isDone && (
+            <p className="animate-fadein text-2xl">test complete</p>
           )}
-          {status.isDone && <p className="text-2xl">test complete</p>}
           {status.isLoading && (
-            <div className="flex items-center text-4xl min-h-32">
-              <p>Loading...</p>
-            </div>
+            <p className="animate-fadein text-2xl">Loading...</p>
           )}
           <div
             ref={ref}
-            className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+            key={Math.random()}
+            className={
+              'relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 ' +
+              (status.isLoading ? 'animate-fadeout' : 'animate-fadein')
+            }
             style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
             <Cursor
