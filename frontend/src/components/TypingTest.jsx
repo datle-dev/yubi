@@ -37,6 +37,7 @@ const TypingTest = () => {
   const [status, setStatus] = useState({
     isStarted: false,
     isDone: false,
+    isLoading: false,
   });
 
   const [time, setTime] = useState({
@@ -430,9 +431,15 @@ const TypingTest = () => {
             <p className="text-2xl">{timer}s</p>
           )}
           {status.isDone && <p className="text-2xl">test complete</p>}
+          {status.isLoading && (
+            <div className="flex items-center text-4xl min-h-32">
+              <p>Loading...</p>
+            </div>
+          )}
           <div
             ref={ref}
             className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32"
+            style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           >
             <Cursor
               tracker={tracker}
