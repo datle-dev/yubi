@@ -88,7 +88,7 @@ const TypingTest = () => {
 
   const [tracker, setTracker] = useState(() => {
     if (config.isTimeMode) {
-      return mapWords(getRandomWords(wordList, 25));
+      return mapWords(getRandomWords(wordList, 500));
     } else if (config.isWordMode) {
       return mapWords(getRandomWords(wordList, config.wordModeCount));
     }
@@ -96,7 +96,7 @@ const TypingTest = () => {
 
   useEffect(() => {
     if (config.isTimeMode) {
-      setTracker(mapWords(getRandomWords(wordList, 25)));
+      setTracker(mapWords(getRandomWords(wordList, 500)));
     } else if (config.isWordMode) {
       setTracker(mapWords(getRandomWords(wordList, config.wordModeCount)));
     }
@@ -303,7 +303,7 @@ const TypingTest = () => {
       typed: 0,
       errors: 0,
     });
-    setTracker(mapWords(getRandomWords(wordList, 25)));
+    setTracker(mapWords(getRandomWords(wordList, 500)));
   }
 
   function resetWordMode(num) {
