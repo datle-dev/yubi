@@ -69,12 +69,22 @@ const TypingTest = () => {
   }
 
   async function handleGetWordList(e) {
+    setStatus({
+      isStarted: false,
+      isDone: false,
+      isLoading: true,
+    });
+
     const listName = e.target.getAttribute('list');
     await fetch(`http://localhost:3000/${listName}`)
       .then((res) => res.json())
       .then((data) => {
         setWordList(data.words);
         setConfig({ ...config, wordList: listName });
+      })
+      .then(() => {
+        setStatus({ ...status, isLoading: false });
+        handleReset();
       })
       .catch((err) => console.log(err));
   }
