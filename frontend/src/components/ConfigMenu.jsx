@@ -11,13 +11,7 @@ export default function ConfigMenu({
   return (
     <>
       <section className="flex flex-col gap-2 my-4">
-        <Button
-          type="button"
-          className="bg-sky-950 text-sky-300/50 hover:text-sky-200 p-2"
-          onClick={onClickReset}
-        >
-          reset
-        </Button>
+        <Button text={'reset'} onClick={onClickReset} isActive={false} />
         <div className="flex justify-between gap-4">
           <div>
             <Button
