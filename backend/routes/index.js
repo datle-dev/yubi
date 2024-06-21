@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url';
 
 const router = express.Router();
 
+router.get('/default', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../data/default.json'));
+});
+
 router.get('/available', function (req, res, next) {
   res.sendFile(path.join(__dirname, '../data/available.json'));
 });
