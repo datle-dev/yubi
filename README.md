@@ -37,7 +37,8 @@ Yubi has only a few of monkeytype's wonderful features including:
 All credit for the concept and design belongs to [monkeytype](https://monkeytype.com/).
 Most of Yubi is simply my attempt at recreating and reverse-engineering just a few of its many wonderful features.
 
-English word frequency list is from [IlyaSemenov/wikipedia-word-frequency](https://github.com/IlyaSemenov/wikipedia-word-frequency).
+Project Gutenberg word frequency list is from [Wiktionary's April 2006 Project Gutenberg 1-10000 word frequency list](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2006/04/1-10000).
+The list of words was also filtered manually to remove possible offensive words, single letter entries, some number entries, and entries with apostrophes that did not make sense by themselves.
 
 Sindarin words are from [Eldamo](https://eldamo.org/content/word-indexes/words-s.html) licensed under [CC BY 4.0 Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
 These words are sorted alphabetically and not by any word frequency analysis.
@@ -45,6 +46,8 @@ Changes to the original dictionary list include substitution of accented vowels 
 
 Subtitle word frequency list is from [SUBTLEXus](https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm).
 The list of words was also filtered manually to remove possibly offensive words.
+
+Wikipedia word frequency list is from [IlyaSemenov/wikipedia-word-frequency](https://github.com/IlyaSemenov/wikipedia-word-frequency).
 
 ## Lessons Learned
 
