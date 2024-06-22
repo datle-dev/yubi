@@ -39,6 +39,10 @@ Most of Yubi is simply my attempt at recreating and reverse-engineering just a f
 
 English word frequency list is from [IlyaSemenov/wikipedia-word-frequency](https://github.com/IlyaSemenov/wikipedia-word-frequency).
 
+Sindarin words are from [Eldamo](https://eldamo.org/content/word-indexes/words-s.html) licensed under [CC BY 4.0 Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/).
+These words are sorted alphabetically and not by any word frequency analysis.
+Changes to the original dictionary list include substitution of accented vowels for normal vowels to simplify input for users.
+
 Subtitle word frequency list is from [SUBTLEXus](https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm).
 The list of words was also filtered manually to remove possibly offensive words.
 
