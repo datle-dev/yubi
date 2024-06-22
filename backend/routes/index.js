@@ -22,4 +22,12 @@ router.get('/hololive-en', function (req, res, next) {
   res.sendFile(path.join(__dirname, '../data/hololive-en.json'));
 });
 
+router.get('/sindarin', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../data/sindarin.json'));
+});
+
+router.get('/subtitles-5k', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../data/subtitles-5k.json'));
+});
+
 export default router;
