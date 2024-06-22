@@ -1,9 +1,15 @@
 {
   "available": [
     "default",
-    "english-100",
     "hololive-en",
+    "project-gutenberg-1k",
+    "project-gutenberg-2k",
+    "project-gutenberg-5k",
+    "project-gutenberg-10k",
     "sindarin",
-    "subtitles-5k"
+    "subtitles-1k",
+    "subtitles-2k",
+    "subtitles-5k",
+    "wikipedia-100"
   ]
 }

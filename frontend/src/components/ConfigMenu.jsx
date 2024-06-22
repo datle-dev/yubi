@@ -84,18 +84,36 @@ export default function ConfigMenu({
             </div>
           )}
         </div>
-        <div className="flex justify-center gap-2">
-          <Button
-            text={'english-100'}
-            group={'english-100'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'english-100'}
-          />
+        <div className="flex flex-wrap max-w-3xl justify-center gap-2">
           <Button
             text={'hololive-en'}
             group={'hololive-en'}
             onClick={onClickWordGroup}
             isActive={wordGroup === 'hololive-en'}
+          />
+          <Button
+            text={'project-gutenberg-1k'}
+            group={'project-gutenberg-1k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'project-gutenberg-1k'}
+          />
+          <Button
+            text={'project-gutenberg-2k'}
+            group={'project-gutenberg-2k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'project-gutenberg-2k'}
+          />
+          <Button
+            text={'project-gutenberg-5k'}
+            group={'project-gutenberg-5k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'project-gutenberg-5k'}
+          />
+          <Button
+            text={'project-gutenberg-10k'}
+            group={'project-gutenberg-10k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'project-gutenberg-10k'}
           />
           <Button
             text={'sindarin'}
@@ -104,10 +122,28 @@ export default function ConfigMenu({
             isActive={wordGroup === 'sindarin'}
           />
           <Button
+            text={'subtitles-1k'}
+            group={'subtitles-1k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'subtitles-1k'}
+          />
+          <Button
+            text={'subtitles-2k'}
+            group={'subtitles-2k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'subtitles-2k'}
+          />
+          <Button
             text={'subtitles-5k'}
             group={'subtitles-5k'}
             onClick={onClickWordGroup}
             isActive={wordGroup === 'subtitles-5k'}
+          />
+          <Button
+            text={'wikipedia-100'}
+            group={'wikipedia-100'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'wikipedia-100'}
           />
         </div>
       </section>
