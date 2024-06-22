@@ -37,7 +37,10 @@ Yubi has only a few of monkeytype's wonderful features including:
 All credit for the concept and design belongs to [monkeytype](https://monkeytype.com/).
 Most of Yubi is simply my attempt at recreating and reverse-engineering just a few of its many wonderful features.
 
-English word frequency list from [IlyaSemenov/wikipedia-word-frequency](https://github.com/IlyaSemenov/wikipedia-word-frequency).
+English word frequency list is from [IlyaSemenov/wikipedia-word-frequency](https://github.com/IlyaSemenov/wikipedia-word-frequency).
+
+Subtitle word frequency list is from [SUBTLEXus](https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus/overview.htm).
+The list of words was also filtered manually to remove possibly offensive words.
 
 ## Lessons Learned
 
