@@ -12,7 +12,7 @@ export default function ConfigMenu({
     <>
       <section className="flex flex-col gap-2 my-4">
         <Button text={'reset'} onClick={onClickReset} isActive={false} />
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-center gap-4">
           <div>
             <Button
               text={'time'}
