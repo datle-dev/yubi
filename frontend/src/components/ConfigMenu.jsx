@@ -18,7 +18,7 @@ export default function ConfigMenu({
         >
           reset
         </Button>
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-center gap-4">
           <div>
             <Button
               text={'time'}
