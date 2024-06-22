@@ -97,6 +97,18 @@ export default function ConfigMenu({
             onClick={onClickWordGroup}
             isActive={wordGroup === 'hololive-en'}
           />
+          <Button
+            text={'sindarin'}
+            group={'sindarin'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'sindarin'}
+          />
+          <Button
+            text={'subtitles-5k'}
+            group={'subtitles-5k'}
+            onClick={onClickWordGroup}
+            isActive={wordGroup === 'subtitles-5k'}
+          />
         </div>
       </section>
     </>

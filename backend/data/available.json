@@ -1,3 +1,9 @@
 {
-  "available": ["english-100", "hololive-en"]
+  "available": [
+    "default",
+    "english-100",
+    "hololive-en",
+    "sindarin",
+    "subtitles-5k"
+  ]
 }
