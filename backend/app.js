@@ -13,7 +13,10 @@ import { fileURLToPath } from 'url';
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173', // Vite dev server
+    'http://localhost:9876', // VPS port
+  ],
 };
 
 app.use('*', cors(corsOptions));
