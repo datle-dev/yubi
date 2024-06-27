@@ -15,7 +15,8 @@ const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:5173', // Vite dev server
-    'http://localhost:9876', // VPS port
+    'http://localhost:9876', // alt dev server
+    'https://yubi.datle.dev',
   ],
 };
 
