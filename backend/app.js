@@ -7,7 +7,7 @@ import cors from 'cors';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import indexRouter from './routes/index.js';
+import wordgroupsRouter from './routes/wordgroups.js';
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -23,6 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/api/wordgroups', wordgroupsRouter);
 
 export default app;
