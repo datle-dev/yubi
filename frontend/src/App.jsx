@@ -53,7 +53,7 @@ function App() {
 
   useEffect(() => {
     async function fetchWordList() {
-      await fetch(`http://localhost:3000/${wordGroup}`)
+      await fetch(`http://localhost:3000/api/wordgroups/${wordGroup}`)
         .then((res) => res.json())
         .then((data) => {
           setWords(data.words);
