@@ -4,6 +4,7 @@ import ConfigMenu from './components/ConfigMenu';
 import StatusBar from './components/StatusBar';
 import TypingArea from './components/TypingArea';
 import Results from './components/Results';
+import ResetButton from './components/ResetButton';
 
 function App() {
   const [config, setConfig] = useState(() => {
@@ -356,7 +357,7 @@ function App() {
   return (
     <>
       <div
-        className="flex flex-col items-center min-w-80 font-mono text-sky-300/50"
+        className="flex flex-col items-center min-w-80 min-h-dvh font-mono text-sky-300/50 mx-4"
         onKeyDown={handleKeyDownReset}
         tabIndex="0"
       >
@@ -388,6 +389,7 @@ function App() {
             />
           </>
         )}
+        <ResetButton onClickReset={handleReset} />
         {!isLoading && status.isDone && (
           <>
             <Results
