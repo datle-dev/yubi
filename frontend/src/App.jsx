@@ -357,7 +357,7 @@ function App() {
   return (
     <>
       <div
-        className="flex flex-col items-center min-w-80 font-mono text-sky-300/50"
+        className="flex flex-col items-center min-w-80 min-h-dvh font-mono text-sky-300/50 mx-4"
         onKeyDown={handleKeyDownReset}
         tabIndex="0"
       >

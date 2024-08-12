@@ -52,7 +52,7 @@ export default function TypingTest({ status, tracker, index, typingAreaKey, onKe
 
   return (
     <>
-      <section className="flex flex-col gap-2 justify-center items-center mt-4 mb-8">
+      <section className="flex flex-col gap-2 justify-center items-center my-4">
         <div
           key={typingAreaKey}
           ref={ref}
