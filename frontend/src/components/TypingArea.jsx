@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaArrowPointer } from "react-icons/fa6";
 import Word from './Word';
 import Caret from './Caret.jsx';
 
@@ -55,7 +56,7 @@ export default function TypingTest({ status, tracker, index, typingAreaKey, onKe
         <div
           key={typingAreaKey}
           ref={ref}
-          className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein"
+          className="peer relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein blur focus:blur-none"
           style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
           onKeyDown={onKeyDown}
           tabIndex="0"
@@ -83,6 +84,7 @@ export default function TypingTest({ status, tracker, index, typingAreaKey, onKe
             );
           })}
         </div>
+        <p className="flex items-center gap-2 text-2xl text-sky-200 absolute pointer-events-none peer-focus:invisible"><FaArrowPointer /> Click here to focus</p>
       </section>
     </>
   );
