@@ -358,6 +358,7 @@ function App() {
       <div
         className="flex flex-col items-center min-w-80 font-mono text-sky-300/50"
         onKeyDown={handleKeyDownReset}
+        tabIndex="0"
       >
         <Header />
         <ConfigMenu
