@@ -1,3 +1,6 @@
+import { FaGithub } from "react-icons/fa6";
+import { IconContext } from "react-icons/lib";
+
 export default function Header() {
   return (
     <>
@@ -9,14 +12,10 @@ export default function Header() {
           <h1 className="text-4xl">Yubi</h1>
         </div>
         <div className="flex gap-4">
-          <a className="hover:text-sky-50" href="#">
-            Link
-          </a>
-          <a className="hover:text-sky-50" href="#">
-            Link
-          </a>
-          <a className="hover:text-sky-50" href="#">
-            Link
+          <a className="hover:text-sky-50" href="https://github.com/datle-dev/yubi">
+          <IconContext.Provider value={{ size: "32px" }}>
+            <FaGithub />
+          </IconContext.Provider>
           </a>
         </div>
       </header>
