@@ -4,6 +4,7 @@ import ConfigMenu from './components/ConfigMenu';
 import StatusBar from './components/StatusBar';
 import TypingArea from './components/TypingArea';
 import Results from './components/Results';
+import ResetButton from './components/ResetButton';
 
 function App() {
   const [config, setConfig] = useState(() => {
@@ -388,6 +389,7 @@ function App() {
             />
           </>
         )}
+        <ResetButton onClickReset={handleReset} />
         {!isLoading && status.isDone && (
           <>
             <Results
