@@ -1,4 +1,6 @@
-import { FaClock, FaA } from "react-icons/fa6";
+import { useState } from 'react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { FaClock, FaA, FaCaretUp, FaCaretDown } from 'react-icons/fa6';
 import Button from './Button';
 
 export default function ConfigMenu({
@@ -8,6 +10,25 @@ export default function ConfigMenu({
   onClickConfig,
   onClickWordGroup,
 }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const wordLists = [
+    'hololive-en',
+    'project-gutenberg-1k',
+    'project-gutenberg-2k',
+    'project-gutenberg-5k',
+    'project-gutenberg-10k',
+    'sindarin',
+    'subtitles-1k',
+    'subtitles-2k',
+    'subtitles-5k',
+    'wikipedia-100',
+  ]
+
+  function handleOpenMenu() {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
     <>
       <section className="flex flex-col gap-2 my-4">
@@ -85,68 +106,32 @@ export default function ConfigMenu({
             </div>
           )}
         </div>
-        <div className="flex flex-wrap max-w-3xl justify-center gap-2">
-          <Button
-            text={'hololive-en'}
-            group={'hololive-en'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'hololive-en'}
-          />
-          <Button
-            text={'project-gutenberg-1k'}
-            group={'project-gutenberg-1k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'project-gutenberg-1k'}
-          />
-          <Button
-            text={'project-gutenberg-2k'}
-            group={'project-gutenberg-2k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'project-gutenberg-2k'}
-          />
-          <Button
-            text={'project-gutenberg-5k'}
-            group={'project-gutenberg-5k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'project-gutenberg-5k'}
-          />
-          <Button
-            text={'project-gutenberg-10k'}
-            group={'project-gutenberg-10k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'project-gutenberg-10k'}
-          />
-          <Button
-            text={'sindarin'}
-            group={'sindarin'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'sindarin'}
-          />
-          <Button
-            text={'subtitles-1k'}
-            group={'subtitles-1k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'subtitles-1k'}
-          />
-          <Button
-            text={'subtitles-2k'}
-            group={'subtitles-2k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'subtitles-2k'}
-          />
-          <Button
-            text={'subtitles-5k'}
-            group={'subtitles-5k'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'subtitles-5k'}
-          />
-          <Button
-            text={'wikipedia-100'}
-            group={'wikipedia-100'}
-            onClick={onClickWordGroup}
-            isActive={wordGroup === 'wikipedia-100'}
-          />
-        </div>
+        <DropdownMenu.Root onOpenChange={handleOpenMenu} open={isMenuOpen}>
+          <div className="flex justify-center">
+            <DropdownMenu.Trigger asChild>
+              <button type="button" className="flex items-center gap-2 hover:text-sky-200">
+                {isMenuOpen ? <FaCaretUp /> : <FaCaretDown />}
+                word groups
+              </button>
+            </DropdownMenu.Trigger>
+          </div>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content className="flex flex-col gap-2 p-4 bg-sky-950 border border-sky-800">
+              {wordLists.map((wordList, index) => {
+                return (
+                  <DropdownMenu.Item key={index} className="font-mono">
+                    <Button
+                      text={wordList}
+                      group={wordList}
+                      onClick={onClickWordGroup}
+                      isActive={wordGroup === wordList}
+                    />
+                  </DropdownMenu.Item>
+                )
+              })}
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </section>
     </>
   );
