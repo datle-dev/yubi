@@ -79,127 +79,123 @@ function App() {
     }
   }, [words, config]);
 
-  useEffect(() => {
-    function handleKeydown(e) {
+  function handleKeyDown(e) {
+    const currentWord = tracker[index.word].expected;
+    const expectedLetter = tracker[index.word].expected.charAt(index.letter);
+    const alphaLower = "abcdefghijklmnopqrstuvwxyz'";
+
+    if (alphaLower.includes(e.key)) {
       e.preventDefault();
+    }
 
-      if (status.isDone) {
-        if (e.key === 'Enter') {
-          handleReset();
-        }
-        return;
-      }
+    // updates to tracker, index, and count states depend on the condition
+    // below, so instantiate only once here, then edit and update state
+    // if needed
+    let trackerNew = [...tracker];
+    let indexNew = { ...index };
+    let countNew = { ...count };
 
-      const currentWord = tracker[index.word].expected;
-      const expectedLetter = tracker[index.word].expected.charAt(index.letter);
-      const alphaLower = 'abcdefghijklmnopqrstuvwxyz';
+    if (!status.isStarted) {
+      setStatus({ ...status, isStarted: true });
+      setTime({ ...time, start: new Date() });
+    }
 
-      // updates to tracker, index, and count states depend on the condition
-      // below, so instantiate only once here, then edit and update state
-      // if needed
-      let trackerNew = [...tracker];
-      let indexNew = { ...index };
-      let countNew = { ...count };
-
-      if (!status.isStarted) {
-        setStatus({ ...status, isStarted: true });
-        setTime({ ...time, start: new Date() });
-      }
-
-      // if user types space at start of word, do nothing
-      if (e.key === ' ' && index.typed === 0) {
-        return;
-      }
-
-      // if user types space anywhere else, go to next word
-      if (e.key === ' ' && index.typed > 0) {
-        let indexNextWord = index.word + 1;
-
-        // if already on last word, end typing test
-        if (indexNextWord >= tracker.length && config.isWordMode) {
-          setStatus({ ...status, isDone: true });
-          setTime({ ...time, end: new Date() });
-          return;
-        }
-
-        setIndex({
-          word: indexNextWord,
-          letter: 0,
-          typed: 0,
-        });
-
-        setCount({ ...count, typed: count.typed + 1 });
-
-        return;
-      }
-
-      // if user types backspace, remove previously typed character
-      if (e.key === 'Backspace') {
-        trackerNew[index.word].typed = trackerNew[index.word].typed.slice(
-          0,
-          -1,
-        );
-
-        if (index.letter > 0) {
-          indexNew.typed -= 1;
-          indexNew.letter -= 1;
-        }
-
-        setIndex(indexNew);
-        setTracker(trackerNew);
-
-        return;
-      }
-
-      // handle all other user keypresses
-      if (e.key === expectedLetter) {
-        indexNew.letter += 1;
-        indexNew.typed += 1;
-
-        trackerNew[index.word].typed += e.key;
-
-        setTracker(trackerNew);
-        setIndex(indexNew);
-        setCount({ ...count, typed: count.typed + 1 });
-
-        // if user on last word and typed word matches, end typing test
-        if (
-          index.word === tracker.length - 1 &&
-          trackerNew[index.word].typed === currentWord &&
-          config.isWordMode
-        ) {
-          setStatus({ ...status, isDone: true });
-          setTime({ ...time, end: new Date() });
-          return;
-        }
-
-        // if word not finished, set letter and its index
-        if (indexNew.letter <= currentWord.length) {
-          setIndex(indexNew);
-          return;
-        }
-
-        // even if keypress was wrong, capture what user typed
-      } else if (alphaLower.includes(e.key)) {
-        indexNew.letter += 1;
-        indexNew.typed += 1;
-        trackerNew[index.word].typed += e.key;
-        countNew.expected += 1;
-        countNew.errors += 1;
-
-        setTracker(trackerNew);
-        setIndex(indexNew);
-        setCount(countNew);
-      }
+    // if user types space at start of word, do nothing
+    if (e.key === ' ' && index.typed === 0) {
       return;
     }
 
-    window.addEventListener('keydown', handleKeydown);
+    // if user types space anywhere else, go to next word
+    if (e.key === ' ' && index.typed > 0) {
+      let indexNextWord = index.word + 1;
 
-    return () => {
-      window.removeEventListener('keydown', handleKeydown);
-    };
-  }, [config, index, status, time, count, tracker]);
+      // if already on last word, end typing test
+      if (indexNextWord >= tracker.length && config.isWordMode) {
+        setStatus({ ...status, isDone: true });
+        setTime({ ...time, end: new Date() });
+        return;
+      }
+
+      setIndex({
+        word: indexNextWord,
+        letter: 0,
+        typed: 0,
+      });
+
+      setCount({ ...count, typed: count.typed + 1 });
+
+      return;
+    }
+
+    // if user types backspace, remove previously typed character
+    if (e.key === 'Backspace') {
+      trackerNew[index.word].typed = trackerNew[index.word].typed.slice(
+        0,
+        -1,
+      );
+
+      if (index.letter > 0) {
+        indexNew.typed -= 1;
+        indexNew.letter -= 1;
+      }
+
+      setIndex(indexNew);
+      setTracker(trackerNew);
+
+      return;
+    }
+
+    // handle all other user keypresses
+    if (e.key === expectedLetter) {
+      indexNew.letter += 1;
+      indexNew.typed += 1;
+
+      trackerNew[index.word].typed += e.key;
+
+      setTracker(trackerNew);
+      setIndex(indexNew);
+      setCount({ ...count, typed: count.typed + 1 });
+
+      // if user on last word and typed word matches, end typing test
+      if (
+        index.word === tracker.length - 1 &&
+        trackerNew[index.word].typed === currentWord &&
+        config.isWordMode
+      ) {
+        setStatus({ ...status, isDone: true });
+        setTime({ ...time, end: new Date() });
+        return;
+      }
+
+      // if word not finished, set letter and its index
+      if (indexNew.letter <= currentWord.length) {
+        setIndex(indexNew);
+        return;
+      }
+
+      // even if keypress was wrong, capture what user typed
+    } else if (alphaLower.includes(e.key)) {
+      indexNew.letter += 1;
+      indexNew.typed += 1;
+      trackerNew[index.word].typed += e.key;
+      countNew.expected += 1;
+      countNew.errors += 1;
+
+      setTracker(trackerNew);
+      setIndex(indexNew);
+      setCount(countNew);
+    }
+    return;
+  }
+
+  function handleKeyDownReset(e) {
+    if (status.isDone) {
+      if (e.key === 'Enter') {
+        handleReset();
+      }
+      return;
+    }
+  }
 
   useEffect(() => {
     const intervalId = setInterval(() => {
