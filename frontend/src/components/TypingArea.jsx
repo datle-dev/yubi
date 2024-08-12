@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Word from './Word';
 import Caret from './Caret.jsx';
 
-export default function TypingTest({ status, tracker, index, typingAreaKey }) {
+export default function TypingTest({ status, tracker, index, typingAreaKey, onKeyDown }) {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
   const [wordRowMap, setWordRowMap] = useState({});
@@ -57,6 +57,8 @@ export default function TypingTest({ status, tracker, index, typingAreaKey }) {
           ref={ref}
           className="relative flex justify-start content-start flex-wrap max-w-3xl min-h-32 animate-fadein"
           style={{ visibility: status.isLoading ? 'hidden' : 'visible' }}
+          onKeyDown={onKeyDown}
+          tabIndex="0"
         >
           {!status.isDone && (
             <Caret
