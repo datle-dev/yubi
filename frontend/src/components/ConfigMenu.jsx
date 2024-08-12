@@ -11,16 +11,17 @@ export default function ConfigMenu({
   return (
     <>
       <section className="flex flex-col gap-2 my-4">
-        <Button text={'reset'} onClick={onClickReset} isActive={false} />
         <div className="flex justify-center gap-4">
-          <div>
+          <div className="flex items-center">
             <Button
+              icon={<FaClock />}
               text={'time'}
               mode={'time'}
               onClick={onClickMode}
               isActive={config.isTimeMode}
             />
             <Button
+              icon={<FaA />}
               text={'word'}
               mode={'word'}
               onClick={onClickMode}
@@ -28,7 +29,7 @@ export default function ConfigMenu({
             />
           </div>
           {config.isWordMode && (
-            <div>
+            <div className="flex items-center">
               <Button
                 text={'10'}
                 count={'10'}
@@ -56,7 +57,7 @@ export default function ConfigMenu({
             </div>
           )}
           {config.isTimeMode && (
-            <div>
+            <div className="flex items-center">
               <Button
                 text={'15'}
                 duration={'15'}
