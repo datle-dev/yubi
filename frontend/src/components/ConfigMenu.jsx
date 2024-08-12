@@ -1,9 +1,9 @@
+import { FaClock, FaA } from "react-icons/fa6";
 import Button from './Button';
 
 export default function ConfigMenu({
   config,
   wordGroup,
-  onClickReset,
   onClickMode,
   onClickConfig,
   onClickWordGroup,
