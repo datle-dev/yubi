@@ -355,7 +355,10 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col items-center min-w-80 font-mono text-sky-300/50">
+      <div
+        className="flex flex-col items-center min-w-80 font-mono text-sky-300/50"
+        onKeyDown={handleKeyDownReset}
+      >
         <Header />
         <ConfigMenu
           config={config}
@@ -380,6 +383,7 @@ function App() {
               tracker={tracker}
               index={index}
               typingAreaKey={typingAreaKey}
+              onKeyDown={handleKeyDown}
             />
           </>
         )}
