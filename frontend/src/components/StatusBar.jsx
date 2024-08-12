@@ -9,7 +9,7 @@ export default function StatusBar({
   return (
     <div className="mt-8 mb-4">
       {!status.isStarted && !isLoading && (
-        <p className="animate-fadein text-2xl">type to begin</p>
+        <p className="animate-fadein text-2xl">focus, then type to begin</p>
       )}
       {config.isWordMode &&
         status.isStarted &&
