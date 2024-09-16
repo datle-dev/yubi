@@ -2,15 +2,18 @@
 
 ## About
 
-Yubi is a minimlist typing test heavily based on and inspired by (i.e. basically a clone of) [monkeytype](https://monkeytype.com/).
-I encourage you to try Yubi and also heartily recommend you try monkeytype for one of the best typing test experiences around!
+Yubi is a minimlist typing test heavily based on i.e. a clone of [monkeytype](https://monkeytype.com/).
 
-This is intended to be a full-stack portfolio project using Javascript as the main language, React as the front-end, and Node/Express as the back-end.
-I love monkeytype and wanted to attempt a recreation of it while adding some features of my own, especially features I thought would be helpful for learning alternative keyboard layouts (e.g. Dvorak, Colemak-DH, Canary, etc.).
+This is intended to be a full-stack portfolio project that makes use of the following languages and technologies:
+- Javascript
+- React
+- Node
+- Express
+- Tailwind CSS
 
 ## Features
 
-Yubi has only a few of monkeytype's wonderful features including:
+Yubi's features include:
 
 - minimalist design
 - feedback on correct, incorrect, extra, and missed characters while typing
@@ -20,22 +23,20 @@ Yubi has only a few of monkeytype's wonderful features including:
 
 ## Roadmap
 
-- more English word groups (1k, 2k, 5k, 10k most common)
-- other word groups for fun and variety
-- alternative keyboard layout training utilities
+- [x] more English word groups (1k, 2k, 5k, 10k most common)
+- [x] other word groups for fun and variety
+- [ ] alternative keyboard layout training utilities
   - keyboard layout display
   - most frequent bigram/trigram word groups with configuration for keyboard or finger combinations
-- programming practice mode
+- [ ] programming practice mode
   - for learning to type numbers and symbols on programmable split ortho or column-staggered keyboards where non-alpha keys are often moved to different layers
-- user accounts to save typing test history
-- charts/plots of results
-
-
+- [ ] user accounts to save typing test history
+- [ ] charts/plots of results
 
 ## Credits
 
 All credit for the concept and design belongs to [monkeytype](https://monkeytype.com/).
-Most of Yubi is simply my attempt at recreating and reverse-engineering just a few of its many wonderful features.
+Yubi is mostly recreating and reverse-engineering a few of its many features.
 
 Project Gutenberg word frequency list is from [Wiktionary's April 2006 Project Gutenberg 1-10000 word frequency list](https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/PG/2006/04/1-10000).
 The list of words was also filtered manually to remove possible offensive words, single letter entries, some number entries, and entries with apostrophes that did not make sense by themselves.
